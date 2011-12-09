@@ -24,8 +24,6 @@ app.configure('production', function(){
 
 
 
-app.get('/', function(req, res){
-  res.send('To do zone');
-});
+app.get('/', routes.index);
 
 app.listen(3000);
