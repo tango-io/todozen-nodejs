@@ -1,14 +1,7 @@
-   _ = require('underscore');
-   Backbone = require('backbone');
-   redis = require('redis');
-
-
 var express = require('express')
   , app = express.createServer()
-  , jade = require('jade');
-
-var routes = require('./routes')
-  , models = require('./models/models');
+  , jade = require('jade') 
+  , routes = require('./routes');
 
 
 // Configuration
@@ -31,7 +24,5 @@ app.configure('production', function(){
 //
 
 
-
 app.get('/', routes.index);
-
 app.listen(3000);
