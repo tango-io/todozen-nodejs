@@ -1,6 +1,6 @@
 var Item = Backbone.Model.extend({
   defaults:{
-      id_todo: 0,
+      id_todo: '',
       Todo: ''
       //title: '',
       //column: '',
