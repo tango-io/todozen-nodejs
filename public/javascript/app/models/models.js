@@ -6,5 +6,13 @@ var Item = Backbone.Model.extend({
       //column: '',
       //tags: [],
       //color: '',
-  }
+  },
+
+  save:function() {
+    console.log('asdasdasd');
+    storeSet(this.get('id_todo'), this);
+  },
+
+
+
 });
