@@ -27,6 +27,7 @@
       $(this.el).remove();
     },
     remove: function(){
+      localStorage.removeItem(this.model.get('id_todo'));
       this.model.destroy();
     }
   });
@@ -45,7 +46,7 @@
     },
 
     count: function(){
-      for (i=0; i<=localStorage.length-1; i++)  
+      for (i=localStorage.length-1; i>=0; i--)  
       {
         var item = new Item()
            ,key = localStorage.key(i);
