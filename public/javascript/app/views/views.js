@@ -10,6 +10,9 @@
     model: Item
   });
 
+  index = localStorage.getItem('index')? localStorage.getItem('index').split(',') : [];
+  
+  
   var ItemView = Backbone.View.extend({
     tagName: 'li',      
     events: { 
@@ -27,6 +30,9 @@
       $(this.el).remove();
     },
     remove: function(){
+      //var str = this.model.get('id_todo');
+      //index = _.reject(index, function(key) {return key==str});
+      //localStorage.setItem('index', index)
       localStorage.removeItem(this.model.get('id_todo'));
       this.model.destroy();
     }
@@ -46,22 +52,21 @@
     },
 
     count: function(){
-      for (i=localStorage.length-1; i>=0; i--)  
-      {
+      for(i=0; i<=index.length-1;i++){
         var item = new Item()
-           ,key = localStorage.key(i);
         item.set({
                  id_todo: localStorage.key(i),
-                 Todo: JSON.parse(localStorage.getItem(key))['Todo']
+                 Todo: JSON.parse(localStorage.getItem(index[i]))['Todo']
         });
         this.collection.add(item);
-      }     
+      }
     },
 
 
     render: function(){
       $(this.el).append("<input id='add'></input>");
       $(this.el).append("<ul></ul>");
+
 
 
       _(this.collection.models).each(function(item){ 
@@ -79,6 +84,9 @@
         });
         //localstorage
         localStorage.setItem(item.get('id_todo'), JSON.stringify({"id":item.get('id_todo'),"Todo":item.get("Todo")}))
+        index.push(item.get('id_todo'));
+        localStorage.setItem('index', index)
+        
         this.collection.add(item);
         add.value = '';
       }
