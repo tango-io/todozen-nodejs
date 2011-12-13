@@ -1,52 +1,48 @@
-  function S4(){
+  function _S4(){
     return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
   }
 
-  function guid(){
-    return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
+  function _guid(){
+    return (_S4()+_S4()+"-"+_S4()+"-"+_S4()+"-"+_S4()+"-"+_S4()+_S4()+_S4());
   }
-
-  //setInterval( function(){
-   //localStorage.setItem('index', index)
-  //}, 2000)
 
   function _indexPop(key) {
       localStorage.removeItem(key);
       k = key;
-       var index = this.indexGet();
+       var index = this._indexGet();
        var position = index.indexOf(key);
        if(position != -1){
       index = index.filter(function(val) {return val != key.toString()});
          }
-         this.indexSet(index);
+         this._indexSet(index);
   }
 
-   function indexGet() {
-       var index = this.storeGet('index');
+   function _indexGet() {
+       var index = this._storeGet('index');
        return index ? index : [];
      }
 
-    function indexAdd(key){
-      var index = this.indexGet();
+    function _indexAdd(key){
+      var index = this._indexGet();
     index.push(key);
-      this.indexSet(index);
+      this._indexSet(index);
     }
 
-    function indexSet(index) {
+    function _indexSet(index) {
       localStorage.setItem('index', JSON.stringify(index));
     }
 
-    function getAll() {
+    function _getAll() {
       var r = [];
-      var keys = this.indexGet();
+      var keys = this._indexGet();
       for (var i = 0 ; i < keys.length ; i++){ 
-        var rv = this.storeGet(keys[i]);
+        var rv = this._storeGet(keys[i]);
         if (rv != undefined) r.push(rv);
       }
       return r
     }
 
-    function storeGet(key){
+    function _storeGet(key){
       try{
         return JSON.parse(localStorage.getItem(key));
       } catch(e){
@@ -55,9 +51,9 @@
       }
     }
 
-    function storeSet(key,value){
+    function _storeSet(key,value){
       localStorage.setItem(key, JSON.stringify(value));
-      this.indexAdd(key);
+      this._indexAdd(key);
     }
         
 
@@ -65,7 +61,7 @@
     model: Item
   });
 
-  index = indexGet();
+  index = _indexGet();
   
   
   var ItemView = Backbone.View.extend({
@@ -105,7 +101,7 @@
     },
 
     count: function(){
-      this.collection.add(getAll())
+      this.collection.add(_getAll())
     },
 
 
@@ -122,12 +118,10 @@
       if (event.keyCode == 13 && add.value!=''){
         var item = new Item();
         item.set({
-          id_todo: guid(),
+          id_todo: _guid(),
           Todo: add.value
         });
-        //localstorage
         item.save();
-        
         this.collection.add(item);
         add.value = '';
       }

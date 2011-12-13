@@ -9,8 +9,7 @@ var Item = Backbone.Model.extend({
   },
 
   save:function() {
-    console.log('asdasdasd');
-    storeSet(this.get('id_todo'), this);
+    _storeSet(this.get('id_todo'), this);
   },
 
 
