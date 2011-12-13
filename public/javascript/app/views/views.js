@@ -6,15 +6,6 @@
     return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
   }
 
-//var keys = [];
-//function listAllItems(){  
-    //for (i=0; i<=localStorage.length-1; i++)  
-    //{ 
-        //keys[i] = localStorage.key(i);  
-    //}  
-        ////localStorage.setItem('index', keys)
-//}
-
   var List = Backbone.Collection.extend({
     model: Item
   });
@@ -50,38 +41,36 @@
 
       this.collection = new List();
       this.collection.bind('add', this.appendItem); 
-      //this.counter = 0;
-      this.count();
       this.render();
     },
 
     count: function(){
-      //var keys = [];
       for (i=0; i<=localStorage.length-1; i++)  
-      { 
-        //var item = new Item();
-        //item.set({
-          //id_todo: localStorage.key(i),
-          //Todo: localStorage.getItem(localStorage.key(i));
-        //});
-        //this.collection.add(item);
+      {
+        var item = new Item()
+           ,key = localStorage.key(i);
+        item.set({
+                 id_todo: localStorage.key(i),
+                 Todo: JSON.parse(localStorage.getItem(key))['Todo']
+        });
+        this.collection.add(item);
       }     
     },
 
 
     render: function(){
-      //listAllItems();
       $(this.el).append("<input id='add'></input>");
       $(this.el).append("<ul></ul>");
-      
+
+
       _(this.collection.models).each(function(item){ 
         appendItem(item);
       }, this);
+      this.count();
     },
 
     addItem: function(){
       if (event.keyCode == 13 && add.value!=''){
-        //this.counter++;
         var item = new Item();
         item.set({
           id_todo: guid(),
