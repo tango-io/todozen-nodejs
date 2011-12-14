@@ -110,9 +110,12 @@
         var val = modify.value;
         var id = this.model.get('id_todo');
         var item = new Item();
+        var title = modify.value;
+        var column = title.match(regExp)? title.match(regExp).pop().substring(1) : '';
         item.set({
           id_todo: id,
-          title: val
+          title: val,
+          column: column
         });
         _indexPop(id);
         item.save();
@@ -155,7 +158,7 @@
       if (event.keyCode == 13 && add.value!=''){
         var item = new Item();
         var title = add.value;
-        var column = title.match(regExp).pop();
+        var column = title.match(regExp)? title.match(regExp).pop().substring(1) : '';
 
         item.set({
           id_todo: _guid(),
