@@ -4,7 +4,12 @@
   };
 
   COLUMNS = ["inbox", "working", "complete"];
-  r = COLUMNS.map(function(col){return "#"+col}).join("|");
+
+  TAG = {
+      "columns":"#"
+  }
+
+  r = COLUMNS.map(function(col){return TAG['columns']+col}).join("|");
   regExp = new RegExp(r,"gi") 
 
   listView = new ListView();
