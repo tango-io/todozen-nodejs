@@ -100,7 +100,6 @@
     edit: function(){
       if(typeof(modify)!='object'){
         var value = JSON.parse(localStorage.getItem(this.model.get('id_todo')))['title'];
-        console.log(value);
         $(this.el).html("<input id='modify'></input>");
         $('#modify').val(value);
         $("#modify").focus();
@@ -153,17 +152,15 @@
     },
 
     addItem: function(){
-//var t="estas son dos #columnas #inbox y #working"
-//t.match(reg).pop()
-//var reg = new RegExp(r,"gi") 
-//var r = cols.map(function(col){return "#"+col}).join("|");
       if (event.keyCode == 13 && add.value!=''){
         var item = new Item();
-            title = add.value;
+        var title = add.value;
+        var column = title.match(regExp).pop();
+
         item.set({
           id_todo: _guid(),
           title: title,
-          column: title
+          column: column
         });
         item.save();
         this.collection.add(item);

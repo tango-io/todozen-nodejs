@@ -4,6 +4,8 @@
   };
 
   COLUMNS = ["inbox", "working", "complete"];
+  r = COLUMNS.map(function(col){return "#"+col}).join("|");
+  regExp = new RegExp(r,"gi") 
 
   listView = new ListView();
 })(jQuery);
