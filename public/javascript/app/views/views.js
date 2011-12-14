@@ -1,3 +1,5 @@
+
+  //-------------------------------------------------------------------------------------------- !private methods
   function _S4(){
     return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
   }
@@ -56,12 +58,21 @@
       this._indexAdd(key);
     }
 
+  //-------------------------------------------------------------------------------------------- end of methods!
+
+  //-------------------------------------------------------------------------------------------- !backbone views 
+
+  //-------------------------------------------------------------------------------------------- !backbone collection 
+
   var List = Backbone.Collection.extend({
     model: Item
   });
 
   index = _indexGet();
   
+  //-------------------------------------------------------------------------------------------- end of collection! 
+
+  //-------------------------------------------------------------------------------------------- !ItemView 
   
   var ItemView = Backbone.View.extend({
     tagName: 'li',      
@@ -96,7 +107,6 @@
       }
     },
     modItem: function(){
-      // VALUE = '' modificarlo ya que toma solo el primero 
       if (event.keyCode == 13 && modify.value!=''){
         var val = modify.value;
         var id = this.model.get('id_todo');
@@ -109,15 +119,13 @@
         item.save();
         $(this.el).html('<span style="color:black;">'+val+'<span class="delete">[X]</span><span class="edit">[EDIT]</span>');
       }
-      if(event.keyCode == 27)
-        {
-        console.log('wf');
-        //$(this.el).html('<span style="color:black;">'+this.model.get('title')+'<span class="delete">[X]</span><span class="edit">[EDIT]</span>');
-        }
     }
 
   });
 
+  //-------------------------------------------------------------------------------------------- end of ItemView!
+
+  //-------------------------------------------------------------------------------------------- !ListView 
   var ListView = Backbone.View.extend({
     el: $('body'), 
     events: {
@@ -145,6 +153,10 @@
     },
 
     addItem: function(){
+//var t="estas son dos #columnas #inbox y #working"
+//t.match(reg).pop()
+//var reg = new RegExp(r,"gi") 
+//var r = cols.map(function(col){return "#"+col}).join("|");
       if (event.keyCode == 13 && add.value!=''){
         var item = new Item();
             title = add.value;
@@ -158,10 +170,6 @@
         add.value = '';
       }
     },
-//var t="estas son dos #columnas #inbox y #working"
-//t.match(reg).pop()
-//var reg = new RegExp(r,"gi") 
-//var r = cols.map(function(col){return "#"+col}).join("|");
 
     appendItem: function(item){
       var itemView = new ItemView({
@@ -170,3 +178,7 @@
       $('ul', this.el).append(itemView.render().el);
     }
   });
+
+  //-------------------------------------------------------------------------------------------- end of ListView! 
+
+  //-------------------------------------------------------------------------------------------- end of backbone views
