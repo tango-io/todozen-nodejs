@@ -67,7 +67,9 @@
   var ItemView = Backbone.View.extend({
     tagName: 'li',      
     events: { 
-      'click span.delete': 'remove'
+      'click span.delete': 'remove',
+      'click span.edit': 'edit',
+      'keypress input#modify': 'modItem'
     },    
     initialize: function(){
       _.bindAll(this, 'render', 'unrender', 'remove');
@@ -85,6 +87,23 @@
       _indexPop(id);
       this.model.destroy();
     },
+    edit: function(){
+      $(this.el).html("<input id='modify'></input>");
+    },
+    modItem: function(){
+      if (event.keyCode == 13 && modify.value!=''){
+        var val = modify.value;
+        var id = this.model.get('id_todo');
+        var item = new Item();
+        item.set({
+          id_todo: id,
+          Todo: val
+        });
+        _indexPop(id);
+        item.save();
+      $(this.el).html('<span style="color:black;">'+val+'<span class="delete">[X]</span><span class="edit">[EDIT]</span>');
+      }   
+    }
 
   });
 
