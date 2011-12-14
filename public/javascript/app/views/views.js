@@ -75,7 +75,7 @@
       this.model.bind('remove', this.unrender);
     },
     render: function(){
-      $(this.el).html('<span style="color:black;">'+this.model.get('Todo')+'<span class="delete">[X]</span><span class="edit">[EDIT]</span>');
+      $(this.el).html('<span style="color:black;">'+this.model.get('title')+'<span class="delete">[X]</span><span class="edit">[EDIT]</span>');
       return this; 
     },
     unrender: function(){
@@ -88,24 +88,31 @@
     },
     edit: function(){
       if(typeof(modify)!='object'){
-        var value = JSON.parse(localStorage.getItem(this.model.get('id_todo')))['Todo'];
+        var value = JSON.parse(localStorage.getItem(this.model.get('id_todo')))['title'];
+        console.log(value);
         $(this.el).html("<input id='modify' value="+value+"></input>");
-        document.getElementById("modify").focus();
+        $("#modify").focus();
       }
     },
     modItem: function(){
+      // VALUE = '' modificarlo ya que toma solo el primero 
       if (event.keyCode == 13 && modify.value!=''){
         var val = modify.value;
         var id = this.model.get('id_todo');
         var item = new Item();
         item.set({
           id_todo: id,
-          Todo: val
+          title: val
         });
         _indexPop(id);
         item.save();
-      $(this.el).html('<span style="color:black;">'+val+'<span class="delete">[X]</span><span class="edit">[EDIT]</span>');
-      }   
+        $(this.el).html('<span style="color:black;">'+val+'<span class="delete">[X]</span><span class="edit">[EDIT]</span>');
+      }
+      if(event.keyCode == 27)
+        {
+        console.log('wf');
+        //$(this.el).html('<span style="color:black;">'+this.model.get('title')+'<span class="delete">[X]</span><span class="edit">[EDIT]</span>');
+        }
     }
 
   });
@@ -139,16 +146,21 @@
     addItem: function(){
       if (event.keyCode == 13 && add.value!=''){
         var item = new Item();
+            title = add.value;
         item.set({
           id_todo: _guid(),
-          Todo: add.value
+          title: title,
+          column: title
         });
         item.save();
         this.collection.add(item);
         add.value = '';
       }
     },
-
+//var t="estas son dos #columnas #inbox y #working"
+//t.match(reg).pop()
+//var reg = new RegExp(r,"gi") 
+//var r = cols.map(function(col){return "#"+col}).join("|");
 
     appendItem: function(item){
       var itemView = new ItemView({
