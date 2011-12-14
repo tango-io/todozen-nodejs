@@ -90,7 +90,8 @@
       if(typeof(modify)!='object'){
         var value = JSON.parse(localStorage.getItem(this.model.get('id_todo')))['title'];
         console.log(value);
-        $(this.el).html("<input id='modify' value="+value+"></input>");
+        $(this.el).html("<input id='modify'></input>");
+        $('#modify').val(value);
         $("#modify").focus();
       }
     },
