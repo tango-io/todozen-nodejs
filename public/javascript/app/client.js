@@ -10,8 +10,10 @@
       "colors":"!"
   }
 
-  r = COLUMNS.map(function(col){return TAG['columns']+col}).join("|");
-  regExp = new RegExp(r,"gi") 
+  var column = COLUMNS.map(function(column){return TAG['columns']+column}).join("|");
+  var color = COLORS.map(function(color){return TAG['colors']+color}).join("|");
+  regColumn = new RegExp(column,"gi") 
+  regColor = new RegExp(color,"gi") 
 
   listView = new ListView();
 })(jQuery);

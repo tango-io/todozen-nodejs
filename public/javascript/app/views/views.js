@@ -111,11 +111,13 @@
         var id = this.model.get('id_todo');
         var item = new Item();
         var title = modify.value;
-        var column = title.match(regExp)? title.match(regExp).pop().substring(1) : '';
+        var column = title.match(regColumn)? title.match(regColumn).pop().substring(1) : '';
+        var color = title.match(regColor)? title.match(regColor).pop().substring(1) : '';
         item.set({
           id_todo: id,
           title: val,
-          column: column
+          column: column,
+          color: color
         });
         _indexPop(id);
         item.save();
@@ -158,12 +160,14 @@
       if (event.keyCode == 13 && add.value!=''){
         var item = new Item();
         var title = add.value;
-        var column = title.match(regExp)? title.match(regExp).pop().substring(1) : '';
+        var column = title.match(regColumn)? title.match(regColumn).pop().substring(1) : '';
+        var color = title.match(regColor)? title.match(regColor).pop().substring(1) : '';
 
         item.set({
           id_todo: _guid(),
           title: title,
-          column: column
+          column: column,
+          color: color
         });
         item.save();
         this.collection.add(item);

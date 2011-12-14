@@ -3,9 +3,9 @@ var Item = Backbone.Model.extend({
       id_todo: '',
       title: '',
       //title: '',
-      column: ''
+      column: '',
       //tags: [],
-      //color: '',
+      color: ''
   },
 
   save:function() {
