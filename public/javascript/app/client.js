@@ -11,20 +11,22 @@
   }
 
 
-//$.getScript('/socket.io/socket.io.js');
-  //var socket = io.connect('http://localhost');
-  //socket.on('news', function (data) {
-    //console.log(data);
-    //socket.emit('my other event', { my: 'data' });
-  //});
 
-$.getScript('/socket.io/socket.io.js', function(){
-    var socket = new io.Socket(null, {port: 3000, rememberTransport: false});
-    socket.connect();
-    socket.on('message', function(json) {
-        $('#container').prepend("<li>" + json.foo + "</li>");
+  var socket = io.connect();
+  socket.on('connect', function () {
+    
+    console.log('we are connected');
+    
+    var name = prompt('ehat is your name?');
+
+    this.emit('set nickname', name, function (success){
+             console.log('The server got the message!');
+             if(!success){
+               console.log('Nickname in use!');
+             }
     });
-});
+  });
+
 
 
   var column = COLUMNS.map(function(column){return TAG['columns']+column}).join("|");

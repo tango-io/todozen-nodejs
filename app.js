@@ -4,13 +4,35 @@ var express = require('express')
   , routes = require('./routes')
   , io = require('socket.io').listen(app);
 
+var users = [];
 
 io.sockets.on('connection', function (socket) {
-  socket.emit('news', { hello: 'world' });
-  socket.on('my other event', function (data) {
-    console.log(data);
-  });
+    socket.on('set nickname', function (nickname, callback) {
+        if (users.indexOf(nickname) !== -1) {
+            return callback(false);
+        }
+
+        socket.nickname = nickname;
+
+        users.push(nickname);
+        socket.broadcast.emit('user join', nickname);
+        socket.emit('users', users);
+        callback(true);
+    });
+  
+    socket.on('message', function (msg) {
+        socket.broadcast.emit('user message', socket.nickname, msg);
+    });
+  
+    socket.on('disconnect', function () {
+        var nickname = socket.nickname;
+        if (nickname) {
+            socket.broadcast.emit('user part', nickname);
+            users.splice(users.indexOf(nickname), 1);
+        }
+    });
 });
+
 
 
 // Configuration
