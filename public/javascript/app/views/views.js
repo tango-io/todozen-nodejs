@@ -88,7 +88,8 @@
       this.model.destroy();
     },
     edit: function(){
-      $(this.el).html("<input id='modify'></input>");
+      var value = JSON.parse(localStorage.getItem(this.model.get('id_todo')))['Todo'];
+      $(this.el).html("<input id='modify' value="+value+"></input>");
     },
     modItem: function(){
       if (event.keyCode == 13 && modify.value!=''){
