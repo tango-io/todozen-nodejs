@@ -4,9 +4,10 @@
   };
 
   COLUMNS = ["inbox", "working", "complete"];
-
+  COLORS = ["red", "blue", "green", "yellow"];
   TAG = {
-      "columns":"#"
+      "columns":"#",
+      "colors":"!"
   }
 
   r = COLUMNS.map(function(col){return TAG['columns']+col}).join("|");
