@@ -55,7 +55,6 @@
       localStorage.setItem(key, JSON.stringify(value));
       this._indexAdd(key);
     }
-        
 
   var List = Backbone.Collection.extend({
     model: Item
@@ -88,8 +87,11 @@
       this.model.destroy();
     },
     edit: function(){
-      var value = JSON.parse(localStorage.getItem(this.model.get('id_todo')))['Todo'];
-      $(this.el).html("<input id='modify' value="+value+"></input>");
+      if(typeof(modify)!='object'){
+        var value = JSON.parse(localStorage.getItem(this.model.get('id_todo')))['Todo'];
+        $(this.el).html("<input id='modify' value="+value+"></input>");
+        document.getElementById("modify").focus();
+      }
     },
     modItem: function(){
       if (event.keyCode == 13 && modify.value!=''){
