@@ -15,29 +15,46 @@
   var socket = io.connect();
   socket.on('connect', function () {  
     console.log('we are connected');
-    
-    var name = prompt('ehat is your name?');
-    
-    this.emit('set nickname', name, function (success){
-             console.log('The server got the message!');
-             if(!success){
-               console.log('Nickname in use!');
-             }
-    });
   });
 
+  var User = Backbone.View.extend({
+    el: $('body'), 
+    events: { 
+      'keypress input#username': 'register'
+    },
 
+    initialize: function(){
+      _.bindAll(this, 'register');
+    },
+
+    register: function(){
+      if (event.keyCode == 13 && username.value!=''){
+        var name = username.value;
+        socket.emit('set nickname', name, function (success){
+          console.log('Wellcome: '+ name + "!");
+        $('#username').remove();
+        $('label').remove();                             //CAUTION
+          if(!success){
+            console.log('Nickname in use!');
+          }
+        });
+      }
+    }
+  
+  });
+
+  var user = new User();
 
   var column = COLUMNS.map(function(column){return TAG['columns']+column}).join("|");
   var color = COLORS.map(function(color){return TAG['colors']+color}).join("|");
   regColumn = new RegExp(column,"gi") 
   regColor = new RegExp(color,"gi") 
 
-  listView = new ListView();
+  var listView = new ListView();
 
   socket.on('disconnect', function(){
    console.log('ofline');
-   $('h1').append('<span style=" color:red;"> offline </span>');
+   $('#toolbar').append('<span style=" color:red;"> offline </span>');
   });
 
 })(jQuery);

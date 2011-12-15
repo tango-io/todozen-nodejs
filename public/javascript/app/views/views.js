@@ -146,10 +146,9 @@
       this.collection.add(_getAll())
     },
 
-
     render: function(){
-      $(this.el).append("<input id='add'></input>");
-      $(this.el).append("<ul></ul>");
+      //$(this.el).append("<input id='add'></input>");
+      $("#kanban").append("<ol></ol>");
       _(this.collection.models).each(function(item){
         appendItem(item);
       }, this);
@@ -179,7 +178,7 @@
       var itemView = new ItemView({
         model: item
       });
-      $('ul', this.el).append(itemView.render().el);
+      $('ol', this.el).append(itemView.render().el);
     }
   });
 
