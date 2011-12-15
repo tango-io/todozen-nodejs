@@ -12,12 +12,17 @@
 
 
 
+//---------------------------------------------------------------------- !socket connected
   var socket = io.connect();
   socket.on('connect', function () {  
     console.log('we are connected');
     $('#toolbar .led').removeClass('off');
   });
+//---------------------------------------------------------------------- end socket connect!  
+  
 
+
+//---------------------------------------------------------------------- !logg in socket  
   var User = Backbone.View.extend({
     el: $('body'), 
     events: { 
@@ -45,17 +50,24 @@
   });
 
   var user = new User();
+//---------------------------------------------------------------------- end logg in socket!  
 
+
+
+//---------------------------------------------------------------------- !List generator  
   var column = COLUMNS.map(function(column){return TAG['columns']+column}).join("|");
   var color = COLORS.map(function(color){return TAG['colors']+color}).join("|");
   regColumn = new RegExp(column,"gi") 
   regColor = new RegExp(color,"gi") 
 
   var listView = new ListView();
+//---------------------------------------------------------------------- end list generator!  
 
+//---------------------------------------------------------------------- !socket disconnect  
   socket.on('disconnect', function(){
    console.log('ofline');
    $('#toolbar .led').addClass('off');
   });
+//---------------------------------------------------------------------- end socket disconnect!  
 
 })(jQuery);

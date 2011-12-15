@@ -1,6 +1,3 @@
-li {}
-
-
 body {
   font-family: Helvetica;
   font-size: 12px;
@@ -50,4 +47,11 @@ body {
   &.off {
     background-position: -24px 50%;
   }
+}
+
+li {
+  list-style: none;
+  font-family: Helvetica;
+  font-size: 15px;
+  margin:15px;
 }
