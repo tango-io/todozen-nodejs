@@ -96,7 +96,7 @@
       this.model.bind('remove', this.unrender);
     },
     render: function(){
-      $(this.el).html('<span style="color:black;">'+this.model.get('title')+'<span class="delete">[X]</span><span class="edit">[EDIT]</span>');
+      $(this.el).html('<span">'+this.model.get('title')+'<span class="delete">[X]</span><span class="edit">[EDIT]</span>');
       column_count.push(this.model.get('column'));
       return this; 
     },
@@ -118,21 +118,32 @@
     },
     modItem: function(){
       if (event.keyCode == 13 && modify.value!=''){
-        var val = modify.value;
         var id = this.model.get('id_todo');
         var item = new Item();
         var title = modify.value;
-        var column = title.match(regColumn)? title.match(regColumn).pop().substring(1) : '';
+
+        if(title.match(regColumn)){
+        var column = title.match(regColumn).pop().substring(1); 
+        column_count.pop();
+        column_count.push(title.match(regColumn).pop().substring(1));
+        }else{
+          var column = 'inbox';
+          title = title + ' #'+column
+          column_count.pop();
+          column_count.push(column);
+        }
+
         var color = title.match(regColor)? title.match(regColor).pop().substring(1) : '';
+        
         item.set({
           id_todo: id,
-          title: val,
+          title: title,
           column: column,
           color: color
         });
         _indexPop(id);
         item.save();
-        $(this.el).html('<span style="color:black;">'+val+'<span class="delete">[X]</span><span class="edit">[EDIT]</span>');
+        $(this.el).html('<span">'+title+'<span class="delete">[X]</span><span class="edit">[EDIT]</span>');
       }
     }
 
@@ -171,7 +182,14 @@
       if (event.keyCode == 13 && add.value!=''){
         var item = new Item();
         var title = add.value;
-        var column = title.match(regColumn)? title.match(regColumn).pop().substring(1) : '';
+
+        if(title.match(regColumn)){
+        var column = title.match(regColumn).pop().substring(1); 
+        }else{
+          var column = 'inbox';
+          title = title + ' #inbox'
+        }
+        
         var color = title.match(regColor)? title.match(regColor).pop().substring(1) : '';
 
         item.set({
