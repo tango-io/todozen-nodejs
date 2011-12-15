@@ -15,6 +15,7 @@
   var socket = io.connect();
   socket.on('connect', function () {  
     console.log('we are connected');
+    $('#toolbar .led').removeClass('off');
   });
 
   var User = Backbone.View.extend({
@@ -54,7 +55,7 @@
 
   socket.on('disconnect', function(){
    console.log('ofline');
-   $('#toolbar').append('<span style=" color:red;"> offline </span>');
+   $('#toolbar .led').addClass('off');
   });
 
 })(jQuery);
