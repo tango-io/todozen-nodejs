@@ -58,6 +58,15 @@
       this._indexAdd(key);
     }
 
+    function _countColumns(){
+      var colcount = [];
+      _.each(COLUMNS, function(col){
+        colcount.push(_.filter(column_count, function(value){ 
+          return value==col 
+        }))
+      });
+      //console.log(colcount);
+    }
   //-------------------------------------------------------------------------------------------- end of methods!
 
   //-------------------------------------------------------------------------------------------- !backbone views 
@@ -69,6 +78,7 @@
   });
 
   index = _indexGet();
+  var column_count = [];
   
   //-------------------------------------------------------------------------------------------- end of collection! 
 
@@ -87,6 +97,7 @@
     },
     render: function(){
       $(this.el).html('<span style="color:black;">'+this.model.get('title')+'<span class="delete">[X]</span><span class="edit">[EDIT]</span>');
+      column_count.push(this.model.get('column'));
       return this; 
     },
     unrender: function(){
@@ -144,6 +155,7 @@
 
     count: function(){
       this.collection.add(_getAll())
+      _countColumns();
     },
 
     render: function(){
