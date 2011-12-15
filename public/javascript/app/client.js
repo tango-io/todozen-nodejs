@@ -13,12 +13,11 @@
 
 
   var socket = io.connect();
-  socket.on('connect', function () {
-    
+  socket.on('connect', function () {  
     console.log('we are connected');
     
     var name = prompt('ehat is your name?');
-
+    
     this.emit('set nickname', name, function (success){
              console.log('The server got the message!');
              if(!success){
@@ -35,4 +34,10 @@
   regColor = new RegExp(color,"gi") 
 
   listView = new ListView();
+
+  socket.on('disconnect', function(){
+   console.log('ofline');
+   $('h1').append('<span style=" color:red;"> offline </span>');
+  });
+
 })(jQuery);
