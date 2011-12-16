@@ -10,6 +10,12 @@
       "colors":"!"
   }
 
+  
+      for(i=0;i<=COLUMNS.length-1;i++){
+      var pos = i * 20;
+      $("#kanban").append("<div style= float:left; 'position:relative; left:"+pos+"%' class='"+COLUMNS[i]+"'><h1 style='position:relative; right:-40%'>"+COLUMNS[i]+"</h1><ol id='"+COLUMNS[i]+"'></ol></div>");
+      }
+
 
 //---------------------------------------------------------------------- !socket connected
   var socket = io.connect();

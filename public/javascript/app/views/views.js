@@ -150,12 +150,13 @@
         });
         _indexPop(id);
         item.save();
-        $('#'+column).append('<li><span">'+title+'<span class="delete">[X]</span><span class="edit">[EDIT]</span></li>');
-      _countColumns();
         $(this.el).remove();
+        $('#'+column).append('<li class="del"><span">'+title+'<span class="delete">[X]</span><span class="edit">[EDIT]</span></li>');
+      _countColumns();
         collection.remove(this.model);
-        $('li').last().remove();
+        //$('li').last().remove();
         collection.add(item);
+        $('.del').remove();
       }
     }
 
@@ -182,9 +183,6 @@
     },
 
     render: function(){
-      for(i=0;i<=COLUMNS.length-1;i++)
-      $("#kanban").append("<ol id='"+COLUMNS[i]+"'></ol>");
-
       _(collection.models).each(function(item){
         appendItem(item);
       }, this);
