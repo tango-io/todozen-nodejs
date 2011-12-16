@@ -12,8 +12,8 @@
 
   
       for(i=0;i<=COLUMNS.length-1;i++){
-      var pos = i * 20;
-      $("#kanban").append("<div style= float:left; 'position:relative; left:"+pos+"%' class='"+COLUMNS[i]+"'><h1 style='position:relative; right:-40%'>"+COLUMNS[i]+"</h1><ol id='"+COLUMNS[i]+"'></ol></div>");
+      var width = Math.floor(($("#kanban").width() - 40) / COLUMNS.length - 30);
+      $("#kanban").append("<div style='width:"+width+"px' class='column "+COLUMNS[i]+"'><h1>"+COLUMNS[i]+"</h1><ol id='"+COLUMNS[i]+"'></ol></div>");
       }
 
 

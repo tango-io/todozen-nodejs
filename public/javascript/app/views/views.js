@@ -113,6 +113,7 @@
     remove: function(){
       var id = this.model.get('id_todo');
       _indexPop(id);
+      column_count.pop(this.model.get('column'));
       this.model.destroy();
     },
     edit: function(){
@@ -134,7 +135,7 @@
         column_count.pop();
         column_count.push(title.match(regColumn).pop().substring(1));
         }else{
-          var column = 'inbox';
+          var column = COLUMNS[0];
           title = title + ' #'+column
           column_count.pop();
           column_count.push(column);
@@ -151,12 +152,11 @@
         _indexPop(id);
         item.save();
         $(this.el).remove();
-        $('#'+column).append('<li class="del"><span">'+title+'<span class="delete">[X]</span><span class="edit">[EDIT]</span></li>');
+        //$('#'+column).append('<li class="del"><span">'+title+'<span class="delete">[X]</span><span class="edit">[EDIT]</span></li>');
       _countColumns();
         collection.remove(this.model);
-        //$('li').last().remove();
         collection.add(item);
-        $('.del').remove();
+        //$('.del').remove();
       }
     }
 
@@ -187,6 +187,8 @@
         appendItem(item);
       }, this);
       this.count();
+
+
     },
 
     addItem: function(){
@@ -197,8 +199,8 @@
         if(title.match(regColumn)){
         var column = title.match(regColumn).pop().substring(1); 
         }else{
-          var column = 'inbox';
-          title = title + ' #inbox'
+          var column = COLUMNS[0];
+          title = title + ' #'+COLUMNS[0];
         }
         
         var color = title.match(regColor)? title.match(regColor).pop().substring(1) : '';
