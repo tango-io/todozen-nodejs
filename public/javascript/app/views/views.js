@@ -86,6 +86,7 @@
 
   index = _indexGet();
   var column_count = [];
+  selected = [];
   
   //-------------------------------------------------------------------------------------------- end of collection! 
 
@@ -96,6 +97,7 @@
     events: { 
       'click span.delete': 'remove',
       'dblclick div.item': 'edit',
+      'click div.item': 'select',
       'keypress input#modify': 'modItem',
       'blur input#modify': 'release'
     },    
@@ -161,6 +163,12 @@
 
     release: function(){
       $(this.el).html('<div class="item"">'+this.model.get('title')+'<span class="delete">[X]</span></div>');
+    },
+
+    select: function(){
+    $(selected).css('background', '#F4F4F4');
+    $(this.el).css('background', '#3399ff');
+    selected = this.el;
     }
 
   });
