@@ -168,7 +168,9 @@
   var ListView = Backbone.View.extend({
     el: $('body'), 
     events: {
-      'keypress input#add': 'addItem'
+      'keypress input#add': 'addItem',
+      'click input#add': 'change',
+      'blur input#add': 'check'
     },
     initialize: function(){
       _.bindAll(this, 'render', 'addItem', 'appendItem'); 
@@ -224,7 +226,24 @@
       });
       var column = item.attributes.column;
       $('#'+column, this.el).append(itemView.render().el);
+    },
+
+    change: function(){
+      if($('#add').val()=='Enter task here'){
+        $('#add').val('');
+        $('#add').css('color', '#333');
+        $('#add').css('font-style', 'normal');
+      } 
+    },
+
+    check: function(){
+      if($('#add').val()==''){
+        $('#add').val('Enter task here');
+        $('#add').css('color', '#a1a1a1');
+        $('#add').css('font-style', 'italic');
+      }
     }
+
   });
 
   //-------------------------------------------------------------------------------------------- end of ListView! 
