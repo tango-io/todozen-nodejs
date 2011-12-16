@@ -21,7 +21,11 @@ body {
   -webkit-box-shadow: 0px 2px 3px #999;
   -ms-box-shadow: 0px 2px 3px #999; }
   #toolbar #add {
-    width: 90%; }
+    width: 70%; }
+  #toolbar #username {
+    width: 20%;
+    left: 10px;
+    text-align: center; }
   #toolbar input {
     top: 8px;
     position: relative;

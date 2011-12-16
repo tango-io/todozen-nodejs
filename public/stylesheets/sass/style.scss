@@ -26,8 +26,15 @@ body {
   -ms-box-shadow: 0px 2px 3px #999;
 
   #add {
-    width: 90%;
+    width: 70%;
   }
+
+  #username {
+    width: 20%;
+    left: 10px;
+    text-align: center;
+  }
+
   input {
     top: 8px;
     position: relative;

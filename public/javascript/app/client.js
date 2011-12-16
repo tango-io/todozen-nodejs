@@ -43,8 +43,8 @@
         var name = username.value;
         socket.emit('set nickname', name, function (success){
           console.log('Wellcome: '+ name + "!");
-        $('#username').remove();
-        $('label').remove();                             //CAUTION
+        $('#username').attr('disabled', true);
+        //$('label').remove();                             //CAUTION
           if(!success){
             console.log('Nickname in use!');
           }
