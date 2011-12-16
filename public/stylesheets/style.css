@@ -25,7 +25,9 @@ body {
   #toolbar #username {
     width: 20%;
     left: 10px;
-    text-align: center; }
+    text-align: center;
+    color: #a1a1a1;
+    font-style: italic; }
   #toolbar input {
     top: 8px;
     position: relative;

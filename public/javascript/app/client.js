@@ -10,6 +10,7 @@
       "colors":"!"
   }
 
+
   
 //---------------------------------------------------------------------- !making lists
       for(i=0;i<=COLUMNS.length-1;i++){
@@ -32,7 +33,9 @@
   var User = Backbone.View.extend({
     el: $('body'), 
     events: { 
-      'keypress input#username': 'register'
+      'keypress input#username': 'register',
+      'click input#username': 'change',
+      'blur input#username': 'check'
     },
 
     initialize: function(){
@@ -45,11 +48,26 @@
         socket.emit('set nickname', name, function (success){
           console.log('Wellcome: '+ name + "!");
         $('#username').attr('disabled', true);
-        //$('label').remove();                             //CAUTION
           if(!success){
             console.log('Nickname in use!');
           }
         });
+      }
+    },
+
+    change: function(){
+      if($('#username').val()=='User name'){
+      $('#username').val('');
+      $('#username').css('color', '#333');
+      $('#username').css('font-style', 'normal');
+      }
+    },
+
+    check: function(){
+      if($('#username').val()==''){
+      $('#username').val('User name');
+      $('#username').css('color', '#a1a1a1');
+      $('#username').css('font-style', 'italic');
       }
     }
   
@@ -60,14 +78,14 @@
 
 
 
-//---------------------------------------------------------------------- !List generator  
+//---------------------------------------------------------------------- !List element generator  
   var column = COLUMNS.map(function(column){return TAG['columns']+column}).join("|");
   var color = COLORS.map(function(color){return TAG['colors']+color}).join("|");
   regColumn = new RegExp(column,"gi") 
   regColor = new RegExp(color,"gi") 
 
   var listView = new ListView();
-//---------------------------------------------------------------------- end list generator!  
+//---------------------------------------------------------------------- end list element generator!  
 
 //---------------------------------------------------------------------- !socket disconnect  
   socket.on('disconnect', function(){
