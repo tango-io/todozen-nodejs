@@ -95,7 +95,7 @@
     tagName: 'li',      
     events: { 
       'click span.delete': 'remove',
-      'click span.edit': 'edit',
+      'dblclick span.item': 'edit',
       'keypress input#modify': 'modItem'
     },    
     initialize: function(){
@@ -103,7 +103,7 @@
       this.model.bind('remove', this.unrender);
     },
     render: function(){
-      $(this.el).html('<span">'+this.model.get('title')+'<span class="delete">[X]</span><span class="edit">[EDIT]</span>');
+      $(this.el).html('<span class="item"">'+this.model.get('title')+'<span class="delete">[X]</span>');
       column_count.push(this.model.get('column'));
       return this; 
     },
