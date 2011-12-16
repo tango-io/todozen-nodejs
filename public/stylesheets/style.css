@@ -65,9 +65,16 @@ body {
       border-top: 1px solid rgba(255, 255, 255, 0.6);
       border-bottom: 1px solid #D8D8D8;
       background: #F4F4F4;
-      padding: 6px 10px;
+      padding: 6px 10px; }
+    #kanban ol li, #kanban ol input, #kanban ul li, #kanban ul input {
       font-size: 15px;
       line-height: 24px; }
+    #kanban ol input, #kanban ul input {
+      width: 100%;
+      line-height: 14px; }
+    #kanban ol .delete, #kanban ul .delete {
+      color: red;
+      float: right; }
   #kanban .column {
     border-radius: 5px;
     box-shadow: 0 0 5px #AAA;

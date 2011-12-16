@@ -82,8 +82,18 @@ body {
       border-bottom: 1px solid #D8D8D8;
       background: #F4F4F4;
       padding: 6px 10px;
+    }
+    li, input {
       font-size: 15px;
       line-height: 24px;
+    }
+    input {
+      width: 100%;
+      line-height: 14px;
+    }
+    .delete {
+      color: red;
+      float: right;
     }
   }
 

@@ -24,6 +24,10 @@
   socket.on('connect', function () {  
     console.log('we are connected');
     $('#toolbar .led').removeClass('off');
+      $('#username').val('User name');
+      $('#username').css('color', '#a1a1a1');
+      $('#username').css('font-style', 'italic');
+      $('#username').attr('disabled', false);
   });
 //---------------------------------------------------------------------- end socket connect!  
   

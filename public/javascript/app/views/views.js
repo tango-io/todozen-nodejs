@@ -95,15 +95,16 @@
     tagName: 'li',      
     events: { 
       'click span.delete': 'remove',
-      'dblclick span.item': 'edit',
-      'keypress input#modify': 'modItem'
+      'dblclick div.item': 'edit',
+      'keypress input#modify': 'modItem',
+      'blur input#modify': 'release'
     },    
     initialize: function(){
       _.bindAll(this, 'render', 'unrender', 'remove');
       this.model.bind('remove', this.unrender);
     },
     render: function(){
-      $(this.el).html('<span class="item"">'+this.model.get('title')+'<span class="delete">[X]</span>');
+      $(this.el).html('<div class="item"">'+this.model.get('title')+'<span class="delete">[X]</span></div>');
       column_count.push(this.model.get('column'));
       return this; 
     },
@@ -152,12 +153,14 @@
         _indexPop(id);
         item.save();
         $(this.el).remove();
-        //$('#'+column).append('<li class="del"><span">'+title+'<span class="delete">[X]</span><span class="edit">[EDIT]</span></li>');
       _countColumns();
         collection.remove(this.model);
         collection.add(item);
-        //$('.del').remove();
       }
+    },
+
+    release: function(){
+      $(this.el).html('<div class="item"">'+this.model.get('title')+'<span class="delete">[X]</span></div>');
     }
 
   });
