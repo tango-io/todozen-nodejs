@@ -73,10 +73,18 @@ body {
   margin-top: 56px;
   padding: 20px;
 
-  ol, ul {
+    .total{
+      float: right;
+      margin: 0px 10px;
+    } 
+    
+    ol, ul {
     list-style: none;
     margin: 0;
     padding: 0;
+
+
+
     li {
       border-top: 1px solid rgba(255, 255, 255, 0.6);
       border-bottom: 1px solid #D8D8D8;

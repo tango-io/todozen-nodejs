@@ -70,9 +70,16 @@
 
       _.map(colcount, function(value){ 
         result.push([_.uniq(value).shift(),value.length])
+      //for(i=0;i<=COLUMNS.length-1;i++)
+      //$('.total').html('<span class="total">'+result[i][1]+'</span>');
       })
-
       //return result;
+    }
+
+    function _refresh(){
+      $('.total').remove();
+      for(i=0;i<=COLUMNS.length-1;i++)
+      $('.T'+COLUMNS[i]).append('<span class="total">'+result[i][1]+'</span>');    
     }
   //-------------------------------------------------------------------------------------------- end of methods!
 
@@ -118,6 +125,7 @@
       _indexPop(id);
       column_count.pop(this.model.get('column'));
       this.model.destroy();
+      _refresh();
     },
     edit: function(){
       if(typeof(modify)!='object'){
@@ -158,6 +166,7 @@
       _countColumns();
         collection.remove(this.model);
         collection.add(item);
+      _refresh();
       }
     },
 
@@ -193,6 +202,10 @@
     count: function(){
       collection.add(_getAll())
       _countColumns();
+
+      for(i=0;i<=COLUMNS.length-1;i++)
+      $('.T'+COLUMNS[i]).append('<span class="total">'+result[i][1]+'</span>');
+
     },
 
     render: function(){
@@ -228,6 +241,7 @@
         collection.add(item);
         add.value = '';
       _countColumns();
+      _refresh();
       }
     },
 

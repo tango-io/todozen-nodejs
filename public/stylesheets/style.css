@@ -57,6 +57,9 @@ body {
   overflow: hidden;
   margin-top: 56px;
   padding: 20px; }
+  #kanban .total {
+    float: right;
+    margin: 0px 10px; }
   #kanban ol, #kanban ul {
     list-style: none;
     margin: 0;
