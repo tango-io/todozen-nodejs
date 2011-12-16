@@ -60,12 +60,19 @@
 
     function _countColumns(){
       var colcount = [];
+          result = []
+
       _.each(COLUMNS, function(col){
         colcount.push(_.filter(column_count, function(value){ 
           return value==col 
         }))
       });
-      //console.log(colcount);
+
+      _.map(colcount, function(value){ 
+        result.push([_.uniq(value).shift(),value.length])
+      })
+
+      //return result;
     }
   //-------------------------------------------------------------------------------------------- end of methods!
 
@@ -144,6 +151,7 @@
         _indexPop(id);
         item.save();
         $(this.el).html('<span">'+title+'<span class="delete">[X]</span><span class="edit">[EDIT]</span>');
+      _countColumns();
       }
     }
 
@@ -201,6 +209,7 @@
         item.save();
         this.collection.add(item);
         add.value = '';
+      _countColumns();
       }
     },
 
