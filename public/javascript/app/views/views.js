@@ -150,8 +150,12 @@
         });
         _indexPop(id);
         item.save();
-        $(this.el).html('<span">'+title+'<span class="delete">[X]</span><span class="edit">[EDIT]</span>');
+        $('#'+column).append('<li><span">'+title+'<span class="delete">[X]</span><span class="edit">[EDIT]</span></li>');
       _countColumns();
+        $(this.el).remove();
+        collection.remove(this.model);
+        $('li').last().remove();
+        collection.add(item);
       }
     }
 
@@ -167,20 +171,21 @@
     },
     initialize: function(){
       _.bindAll(this, 'render', 'addItem', 'appendItem'); 
-      this.collection = new List();
-      this.collection.bind('add', this.appendItem); 
+      collection = new List();
+      collection.bind('add', this.appendItem); 
       this.render();
     },
 
     count: function(){
-      this.collection.add(_getAll())
+      collection.add(_getAll())
       _countColumns();
     },
 
     render: function(){
-      //$(this.el).append("<input id='add'></input>");
-      $("#kanban").append("<ol></ol>");
-      _(this.collection.models).each(function(item){
+      for(i=0;i<=COLUMNS.length-1;i++)
+      $("#kanban").append("<ol id='"+COLUMNS[i]+"'></ol>");
+
+      _(collection.models).each(function(item){
         appendItem(item);
       }, this);
       this.count();
@@ -207,7 +212,7 @@
           color: color
         });
         item.save();
-        this.collection.add(item);
+        collection.add(item);
         add.value = '';
       _countColumns();
       }
@@ -217,7 +222,8 @@
       var itemView = new ItemView({
         model: item
       });
-      $('ol', this.el).append(itemView.render().el);
+      var column = item.attributes.column;
+      $('#'+column, this.el).append(itemView.render().el);
     }
   });
 
