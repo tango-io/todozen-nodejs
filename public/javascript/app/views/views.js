@@ -58,6 +58,12 @@
       this._indexAdd(key);
     }
 
+    function _refresh(){
+      for(i=0;i<=COLUMNS.length-1;i++){
+        $('.num'+COLUMNS[i]).html(collection.models.filter(function(col){return col.attributes.column==COLUMNS[i]}).length);
+      }
+    }
+
    //-------------------------------------------------------------------------------------------- end of methods!
 
   //-------------------------------------------------------------------------------------------- !backbone views 
@@ -99,6 +105,7 @@
       var id = this.model.get('id_todo');
       _indexPop(id);
       this.model.destroy();
+      _refresh();
     },
     edit: function(){
       if(typeof(modify)!='object'){
@@ -137,6 +144,7 @@
         $(this.el).remove();
         collection.remove(this.model);
         collection.add(item);
+        _refresh();
       }
     },
 
@@ -171,6 +179,7 @@
 
     count: function(){
       collection.add(_getAll())
+      _refresh();
     },
 
     render: function(){
@@ -205,9 +214,7 @@
         item.save();
         collection.add(item);
         add.value = '';
-
-        var num = collection.models.filter(function(i){return i.attributes.column=='inbox'}).length;
-        $('.numinbox').html(num);
+        _refresh();
       }
     },
 
