@@ -58,27 +58,7 @@
       this._indexAdd(key);
     }
 
-    function _countColumns(){
-      var colcount = [];
-          result = []
-
-      _.each(COLUMNS, function(col){
-        colcount.push(_.filter(column_count, function(value){ 
-          return value==col 
-        }))
-      });
-
-      _.map(colcount, function(value){ 
-        result.push([_.uniq(value).shift(),value.length])
-      })
-    }
-
-    function _refresh(){
-      $('.total').remove();
-      for(i=0;i<=COLUMNS.length-1;i++)
-      $('.T'+COLUMNS[i]).append('<span class="total">'+result[i][1]+'</span>');    
-    }
-  //-------------------------------------------------------------------------------------------- end of methods!
+   //-------------------------------------------------------------------------------------------- end of methods!
 
   //-------------------------------------------------------------------------------------------- !backbone views 
 
@@ -89,7 +69,6 @@
   });
 
   index = _indexGet();
-  var column_count = [];
   selected = [];
   
   //-------------------------------------------------------------------------------------------- end of collection! 
@@ -111,7 +90,6 @@
     },
     render: function(){
       $(this.el).html('<div class="item"">'+this.model.get('title')+'<span class="delete">[X]</span></div>');
-      column_count.push(this.model.get('column'));
       return this; 
     },
     unrender: function(){
@@ -120,9 +98,7 @@
     remove: function(){
       var id = this.model.get('id_todo');
       _indexPop(id);
-      column_count.pop(this.model.get('column'));
       this.model.destroy();
-      _refresh();
     },
     edit: function(){
       if(typeof(modify)!='object'){
@@ -132,6 +108,9 @@
         $("#modify").focus();
       }
     },
+
+
+
     modItem: function(){
       if (event.keyCode == 13 && modify.value!=''){
         var id = this.model.get('id_todo');
@@ -140,13 +119,9 @@
 
         if(title.match(regColumn)){
         var column = title.match(regColumn).pop().substring(1); 
-        column_count.pop();
-        column_count.push(title.match(regColumn).pop().substring(1));
         }else{
           var column = COLUMNS[0];
           title = title + ' #'+column
-          column_count.pop();
-          column_count.push(column);
         }
 
         var color = title.match(regColor)? title.match(regColor).pop().substring(1) : '';
@@ -160,10 +135,8 @@
         _indexPop(id);
         item.save();
         $(this.el).remove();
-      _countColumns();
         collection.remove(this.model);
         collection.add(item);
-      //_refresh();
       }
     },
 
@@ -198,11 +171,6 @@
 
     count: function(){
       collection.add(_getAll())
-      _countColumns();
-
-      for(i=0;i<=COLUMNS.length-1;i++)
-      $('.T'+COLUMNS[i]).append('<span class="total">'+result[i][1]+'</span>');
-
     },
 
     render: function(){
@@ -237,8 +205,9 @@
         item.save();
         collection.add(item);
         add.value = '';
-      _countColumns();
-      _refresh();
+
+        var num = collection.models.filter(function(i){return i.attributes.column=='inbox'}).length;
+        $('.numinbox').html(num);
       }
     },
 

@@ -15,7 +15,7 @@
 //---------------------------------------------------------------------- !making lists
       for(i=0;i<=COLUMNS.length-1;i++){
       var width = Math.floor(($("#kanban").width() - 40) / COLUMNS.length - 30);
-      $("#kanban").append("<div style='width:"+width+"px' class='column "+COLUMNS[i]+"'><h1 class='T"+COLUMNS[i]+"'>"+COLUMNS[i]+"</h1><ol id='"+COLUMNS[i]+"'></ol></div>");
+      $("#kanban").append("<div style='width:"+width+"px' class='column "+COLUMNS[i]+"'><h1>"+COLUMNS[i]+"<span class='num"+COLUMNS[i]+"'>0</span></h1><ol id='"+COLUMNS[i]+"'></ol></div>");
       }
 //---------------------------------------------------------------------- !end of making lists
 
