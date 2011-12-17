@@ -64,11 +64,12 @@ body {
     list-style: none;
     margin: 0;
     padding: 0; }
+    #kanban ol .item, #kanban ul .item {
+      padding: 6px 10px; }
     #kanban ol li, #kanban ul li {
       border-top: 1px solid rgba(255, 255, 255, 0.6);
       border-bottom: 1px solid #D8D8D8;
-      background: #F4F4F4;
-      padding: 6px 10px; }
+      background: #F4F4F4; }
     #kanban ol li, #kanban ol input, #kanban ul li, #kanban ul input {
       font-size: 15px;
       line-height: 24px; }

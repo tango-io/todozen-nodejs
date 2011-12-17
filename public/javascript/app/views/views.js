@@ -70,10 +70,7 @@
 
       _.map(colcount, function(value){ 
         result.push([_.uniq(value).shift(),value.length])
-      //for(i=0;i<=COLUMNS.length-1;i++)
-      //$('.total').html('<span class="total">'+result[i][1]+'</span>');
       })
-      //return result;
     }
 
     function _refresh(){
@@ -166,7 +163,7 @@
       _countColumns();
         collection.remove(this.model);
         collection.add(item);
-      _refresh();
+      //_refresh();
       }
     },
 
