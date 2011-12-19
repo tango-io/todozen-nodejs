@@ -128,11 +128,12 @@
         var column = title.match(regColumn).pop().substring(1); 
         }else{
           var column = COLUMNS[0];
-          title = title + ' #'+column
         }
 
         var color = title.match(regColor)? title.match(regColor).pop().substring(1) : '';
         
+        title = title.substring(title.indexOf(title.match(regColumn)), 0);
+
         if(column != this.model.get('column')){
 
         item.set({
@@ -210,13 +211,12 @@
 
         if(title.match(regColumn)){
         var column = title.match(regColumn).pop().substring(1); 
+        title = title.substring(title.indexOf(title.match(regColumn)), 0);
         }else{
           var column = COLUMNS[0];
-          title = title + ' #'+COLUMNS[0];
         }
         
         var color = title.match(regColor)? title.match(regColor).pop().substring(1) : '';
-
         item.set({
           id_todo: _guid(),
           title: title,
