@@ -133,6 +133,8 @@
 
         var color = title.match(regColor)? title.match(regColor).pop().substring(1) : '';
         
+        if(column != this.model.get('column')){
+
         item.set({
           id_todo: id,
           title: title,
@@ -144,6 +146,16 @@
         $(this.el).remove();
         collection.remove(this.model);
         collection.add(item);
+        
+        }else{
+          
+        this.model.set({
+        title: title
+        });
+        localStorage.setItem(id, JSON.stringify(this.model));
+        $(this.el).html('<div class="item"">'+title+'<span class="delete">[X]</span></div>');
+        
+        }
         _refresh();
       }
     },
