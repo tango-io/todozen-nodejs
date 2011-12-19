@@ -58,6 +58,8 @@ body {
   margin-top: 56px;
   padding: 20px; }
   #kanban .total {
+    float: right; }
+  #kanban .total {
     float: right;
     margin: 0px 10px; }
   #kanban ol, #kanban ul {
