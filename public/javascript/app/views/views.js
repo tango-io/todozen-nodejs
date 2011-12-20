@@ -132,10 +132,9 @@
 
         var color = title.match(regColor)? title.match(regColor).pop().substring(1) : '';
         
-        title = title.substring(title.indexOf(title.match(regColumn)), 0);
 
         if(column != this.model.get('column')){
-
+        title = title.substring(title.indexOf(title.match(regColumn)), 0);
         item.set({
           id_todo: id,
           title: title,
