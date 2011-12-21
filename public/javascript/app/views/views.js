@@ -96,6 +96,7 @@
     },
     render: function(){
       $(this.el).html('<div class="item"">'+this.model.get('title')+'<span class="delete">[X]</span></div>');
+      $(this.el).css('background', this.model.get('color'));
       return this; 
     },
     unrender: function(){
@@ -124,14 +125,13 @@
         var item = new Item();
         var title = modify.value;
 
+        var color = title.match(regColor)? title.match(regColor).pop().substring(1) : '';
         if(title.match(regColumn)){
         var column = title.match(regColumn).pop().substring(1); 
         title = title.substring(title.indexOf(title.match(regColumn)), 0);
         }else{
           var column = this.model.get('column');
         }
-
-        var color = title.match(regColor)? title.match(regColor).pop().substring(1) : '';
 
         if(column != this.model.get('column')){
         item.set({
@@ -152,8 +152,9 @@
         });
         localStorage.setItem(id, JSON.stringify(this.model));
         $(this.el).html('<div class="item"">'+title+'<span class="delete">[X]</span></div>');
-        
         }
+
+        $(this.el).css('background', color);
         _refresh();
       }
     },
@@ -206,6 +207,7 @@
         var item = new Item();
         var title = add.value;
 
+        var color = title.match(regColor)? title.match(regColor).pop().substring(1) : '';
         if(title.match(regColumn)){
         var column = title.match(regColumn).pop().substring(1); 
         title = title.substring(title.indexOf(title.match(regColumn)), 0);
@@ -213,7 +215,6 @@
           var column = COLUMNS[0];
         }
         
-        var color = title.match(regColor)? title.match(regColor).pop().substring(1) : '';
         item.set({
           id_todo: _guid(),
           title: title,
@@ -223,6 +224,7 @@
         item.save();
         collection.add(item);
         add.value = '';
+        console.log(color);
         _refresh();
       }
     },
