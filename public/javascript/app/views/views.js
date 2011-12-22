@@ -126,6 +126,7 @@
         var title = modify.value;
 
         var color = title.match(regColor)? title.match(regColor).pop().substring(1) : '';
+        console.log(color);
         if(title.match(regColumn)){
         var column = title.match(regColumn).pop().substring(1); 
         title = title.substring(title.indexOf(title.match(regColumn)), 0);
@@ -145,11 +146,12 @@
         $(this.el).remove();
         collection.remove(this.model);
         collection.add(item);
-        
         }else{
         this.model.set({
-        title: title
+        title: title,
+        color: color
         });
+        selected[1] = this.model.get('color');
         localStorage.setItem(id, JSON.stringify(this.model));
         $(this.el).html('<div class="item"">'+title+'<span class="delete">[X]</span></div>');
         }
@@ -164,9 +166,10 @@
     },
 
     select: function(){
-    $(selected).css('background', '#F4F4F4');
+    $(selected[0]).css('background', selected[1]);
     $(this.el).css('background', '#3399ff');
-    selected = this.el;
+    selected[0] = this.el;
+    selected[1] = this.model.get('color');
     }
 
   });
