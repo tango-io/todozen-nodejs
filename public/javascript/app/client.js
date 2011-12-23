@@ -20,7 +20,7 @@
 //---------------------------------------------------------------------- !end of making lists
 
 //---------------------------------------------------------------------- !socket connected
-  var socket = io.connect();
+  socket = io.connect();
   socket.on('connect', function () {  
     console.log('we are connected');
     $('#toolbar .led').removeClass('off');

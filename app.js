@@ -1,10 +1,13 @@
 var express = require('express')
+  , redis = require('redis')
   , RedisStore = require('connect-redis')(express)
   , connect = require('connect')
   , app = express.createServer()
   , jade = require('jade') 
   , routes = require('./routes')
   , socket = require('./socket-app');
+  
+  models = require('./public/javascript/app/models/models');
 
 
   io = require('socket.io').listen(app);
@@ -24,6 +27,10 @@ app.configure(function(){
   app.use(express.static(__dirname + '/public'));
 });
 
+
+var rc = redis.createClient();
+models.Backbone.setClient(rc);
+models.Backbone.initServer(app);
 
 app.configure('development', function(){
   app.use(express.logger());

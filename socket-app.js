@@ -3,6 +3,8 @@ var users = [];
 
 io.sockets.on('connection', function (socket) {
   console.log('Someone just connected!');
+
+
     socket.on('set nickname', function (nickname, callback) {
         if (users.indexOf(nickname) !== -1) {
             return callback(false);
@@ -17,6 +19,10 @@ io.sockets.on('connection', function (socket) {
         callback(true);
     });
   
+    socket.on('add todo', function(item){
+      console.log(models.collection)
+    });
+
     socket.on('message', function (msg) {
         socket.broadcast.emit('user message', socket.nickname, msg);
     });
