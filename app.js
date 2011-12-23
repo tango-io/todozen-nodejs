@@ -17,8 +17,8 @@ var express = require('express')
 // Configuration
 app.configure(function(){
   app.use(express.cookieParser());
-  app.use(express.session({ secret: "keyboard cat", store: new RedisStore, cookie: { maxAge: 60000 } }));
-  //app.use(express.session({ secret: "keyboard cat", store: new RedisStore }));
+  //app.use(express.session({ secret: "keyboard cat", store: new RedisStore, cookie: { maxAge: 60000 } }));
+  app.use(express.session({ secret: "keyboard cat", store: new RedisStore }));
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
   app.use(express.bodyParser());

@@ -20,7 +20,19 @@ io.sockets.on('connection', function (socket) {
     });
   
     socket.on('add todo', function(item){
-      console.log(models.collection)
+      n_item = new models.Item();
+
+      n_item.set({
+      id_todo: item['id_todo'],
+      title: item['title'],
+      column: item['column'],
+      color: item['color']
+      });
+
+      console.log(n_item);
+      n_item.save();
+      
+      //models.collection.add(n_item);
     });
 
     socket.on('message', function (msg) {
