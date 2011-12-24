@@ -1,5 +1,4 @@
 var express = require('express')
-  , redis = require('redis')
   , RedisStore = require('connect-redis')(express)
   , connect = require('connect')
   , app = express.createServer()
@@ -8,6 +7,7 @@ var express = require('express')
   , socket = require('./socket-app');
   
   models = require('./public/javascript/app/models/models');
+  redis = require('redis')
 
 
   io = require('socket.io').listen(app);
@@ -17,8 +17,7 @@ var express = require('express')
 // Configuration
 app.configure(function(){
   app.use(express.cookieParser());
-  //app.use(express.session({ secret: "keyboard cat", store: new RedisStore, cookie: { maxAge: 60000 } }));
-  app.use(express.session({ secret: "keyboard cat", store: new RedisStore }));
+  app.use(express.session({ secret: "keyboard cat", store: new RedisStore, cookie: { maxAge: 60000 } }));
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
   app.use(express.bodyParser());
@@ -28,9 +27,7 @@ app.configure(function(){
 });
 
 
-var rc = redis.createClient();
-models.Backbone.setClient(rc);
-models.Backbone.initServer(app);
+rc = redis.createClient();
 
 app.configure('development', function(){
   app.use(express.logger());

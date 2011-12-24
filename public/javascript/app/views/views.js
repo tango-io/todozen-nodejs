@@ -126,7 +126,6 @@
         var title = modify.value;
 
         var color = title.match(regColor)? title.match(regColor).pop().substring(1) : '';
-        console.log(color);
         if(title.match(regColumn)){
         var column = title.match(regColumn).pop().substring(1); 
         title = title.substring(title.indexOf(title.match(regColumn)), 0);
