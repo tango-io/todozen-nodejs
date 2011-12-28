@@ -64,6 +64,18 @@
       }
     }
 
+    function _getValues(){
+
+    socket.emit('get', function(data){
+      r_index = data;
+    });
+
+
+    }
+
+    
+
+
    //-------------------------------------------------------------------------------------------- end of methods!
 
   //-------------------------------------------------------------------------------------------- !backbone views 
@@ -185,13 +197,14 @@
     },
     initialize: function(){
       _.bindAll(this, 'render', 'addItem', 'appendItem'); 
+      _getValues();
       collection = new List();
       collection.bind('add', this.appendItem); 
       this.render();
     },
 
     count: function(){
-      collection.add(_getAll())
+      collection.add(_getAll());
       _refresh();
     },
 
@@ -223,14 +236,16 @@
           column: column,
           color: color
         });
+        //sending data to localstorage
         item.save();
+
         collection.add(item);
         add.value = '';
         _refresh();
 
-
-        socket.emit('add todo', item);
-
+        // Sendind data to redis
+        socket.emit('add item', localStorage.getItem('index'),item);
+        _getValues();
       }
     },
 
