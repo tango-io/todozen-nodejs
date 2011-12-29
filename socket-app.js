@@ -20,92 +20,62 @@ io.sockets.on('connection', function (socket) {
     });
   
     socket.on('add item', function(index,item){
-      rc.set('index',index,redis.print); 
+      console.log(index);
+      rc.set('index',JSON.stringify(index),redis.print); 
       rc.set(item['id_todo'],JSON.stringify(item),redis.print); 
+      io.sockets.emit('get_message',JSON.stringify(item));
+    });
+
+    socket.on('set',function(id,item){
+    rc.set(id,JSON.stringify(item),redis.print);
+    });
+
+    socket.on('del',function(id,item,i){
+    rc.del(id,redis.print);
+    io.sockets.emit('del_message',item,i);
+    });
+
+    socket.on('index', function(callback){
+      rc.get('index',function(err,value){
+        return callback(value);
+      })
     });
 
     socket.on('get', function(callback){
 
       function index(data){
-      rc.get('index',function(err,value){
-        return data(value);
-      });
+        rc.get('index',function(err,value){
+          return data(value);
+        });
       }
 
-      function values(values){
-        index(function(data){
-          index = JSON.parse(data);
-          function everithing(finaly){
-            if(index){
-              function element(elements){
-                all_data = [];
-                for(i=0; i<=index.length-1;i++){
-                  function get_val(val){
-                    rc.get(index[i],function(err,value){
-                      return val(value);
-                    })
-                  }
-                  function get_all(all_d){
-                    get_val(function(value){
-                      all_data.push(value);
-                      return all_d(all_data);
-                    });
-                  }
-                  get_all(function(){
-                    return elements(all_data);
-                  });
-                }
-              }
-              function a (res){
-                function b(resp){
-                  element(function(elements){
-                    return resp(elements);
-                  });
-                }
-                b(function(resp){
-                  return res(resp);
-                })
-              }
-              a(function(total){
-                return finaly(all_data);
+      function item(id,data){
+        rc.get(id,function(err,value){
+          return data(value);
+        });
+      }
+
+
+      index(function(data){
+
+        if(data){
+          id = JSON.parse(data);
+          all = [];
+          for(i=0;i<=id.length-1;i++){
+            function send(call){
+              item(id[i],function(item){
+                all.push(item);
+                return call(all);
               });
             }
+            send(function(i){
+              if(i.length == id.length)
+                return callback(i);
+            });
           }
-          everithing(function(finaly){
-            return values(finaly);
-          });
-
-        });
-      }
-
-      function get(all_data){
-
-        function redis(red){
-          values(function(all){
-            data = [];
-            data.push(all);
-            return red(all);
-          });
         }
 
-
-        function collect(c){
-          redis(function(call){
-            return c(call);
-          });
-        }
-
-        collect(function(data){
-          return all_data(data);
-        });
-
-      }
-
-      get(function(data){
-        if(data.length == index.length)
-        return callback(data);
       });
-
 
     });
 

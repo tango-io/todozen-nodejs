@@ -64,17 +64,6 @@
       }
     }
 
-    function _getValues(){
-
-    socket.emit('get', function(data){
-      r_index = data;
-    });
-
-
-    }
-
-    
-
 
    //-------------------------------------------------------------------------------------------- end of methods!
 
@@ -86,7 +75,8 @@
     model: models.Item
   });
 
-  index = _indexGet();
+  //index = _indexGet();
+  index = [];
   selected = [];
   
   //-------------------------------------------------------------------------------------------- end of collection! 
@@ -139,36 +129,44 @@
 
         var color = title.match(regColor)? title.match(regColor).pop().substring(1) : '';
         if(title.match(regColumn)){
-        var column = title.match(regColumn).pop().substring(1); 
-        title = title.substring(title.indexOf(title.match(regColumn)), 0);
+          var column = title.match(regColumn).pop().substring(1); 
+          title = title.substring(title.indexOf(title.match(regColumn)), 0);
         }else{
           var column = this.model.get('column');
         }
 
         if(column != this.model.get('column')){
-        item.set({
-          id_todo: id,
-          title: title,
-          column: column,
-          color: color
-        });
-        _indexPop(id);
-        item.save();
-        $(this.el).remove();
-        collection.remove(this.model);
-        collection.add(item);
+          item.set({
+            id_todo: id,
+            title: title,
+            column: column,
+            color: color
+          });
+          //$(this.el).remove();
+          //$(this.el).addClass('remove_me');
+
+          //r = $('li').prop('selectedIndex');
+          r  = $(this.el).index();
+          console.log(this.el);
+          socket.emit('index',function(r_index){
+            index = JSON.parse(r_index);
+            socket.emit('del',id,this.model,r);
+            socket.emit('add item',index,item);
+          });
         }else{
-        this.model.set({
-        title: title,
-        color: color
-        });
-        selected[1] = this.model.get('color');
-        localStorage.setItem(id, JSON.stringify(this.model));
-        $(this.el).html('<div class="item"">'+title+'<span class="delete">[X]</span></div>');
+
+          this.model.set({
+            title: title,
+            color: color
+          });
+
+          selected[1] = this.model.get('color');
+          socket.emit('set',id,this.model);
+          $(this.el).html('<div class="item"">'+title+'<span class="delete">[X]</span></div>');
         }
 
-        $(this.el).css('background', color);
-        _refresh();
+          $(this.el).css('background', color);
+          _refresh();
       }
     },
 
@@ -197,14 +195,46 @@
     },
     initialize: function(){
       _.bindAll(this, 'render', 'addItem', 'appendItem'); 
-      _getValues();
       collection = new List();
       collection.bind('add', this.appendItem); 
+
+      view = this;
+      socket.on('get_message',function(item){
+        collection.add(JSON.parse(item));
+      });
+
+      socket.on('del_message',function(item,i){
+        var destroy = $('li').get(i);
+        $(destroy).remove();
+        collection.remove(item);
+      })
+
       this.render();
     },
 
     count: function(){
-      collection.add(_getAll());
+
+      function get(callback){
+        socket.emit('get', function(data){
+        return callback(data);
+        });
+      }
+
+      get(function(data){
+
+
+        for(i=0;i<=data.length-1;i++)
+        {
+          var item = JSON.parse(data[i]);
+          index.push(item.id_todo);
+          localStorage.setItem(item.id_todo, JSON.stringify(item));
+          localStorage.setItem('index', JSON.stringify(index));
+          collection.add(item);
+        }
+
+
+      });
+      //collection.add(_getAll());
       _refresh();
     },
 
@@ -230,8 +260,9 @@
           var column = COLUMNS[0];
         }
         
+        var id = _guid();
         item.set({
-          id_todo: _guid(),
+          id_todo: id,
           title: title,
           column: column,
           color: color
@@ -239,13 +270,21 @@
         //sending data to localstorage
         item.save();
 
-        collection.add(item);
         add.value = '';
         _refresh();
 
         // Sendind data to redis
-        socket.emit('add item', localStorage.getItem('index'),item);
-        _getValues();
+        socket.emit('index',function(r_index){
+
+          if (r_index){
+            index = JSON.parse(r_index);;
+            index.push(id);
+          }else{
+            index.push(id);
+          }
+
+        socket.emit('add item',index,item);
+        });
       }
     },
 
