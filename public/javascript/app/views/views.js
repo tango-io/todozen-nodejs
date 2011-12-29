@@ -106,9 +106,21 @@
     },
     remove: function(){
       var id = this.model.get('id_todo');
-      _indexPop(id);
-      this.model.destroy();
-      _refresh();
+      //this.model.destroy();
+      //_refresh();
+
+          
+          r  = $(this.el).index();
+          socket.emit('index',function(r_index){
+            index = JSON.parse(r_index);
+            w = index.indexOf(id);
+            index.pop(w);
+            socket.emit('set','index',index);
+            socket.emit('del',id,this.model,r);
+          });
+      
+
+
     },
     edit: function(){
       if(typeof(modify)!='object'){
@@ -142,12 +154,7 @@
             column: column,
             color: color
           });
-          //$(this.el).remove();
-          //$(this.el).addClass('remove_me');
-
-          //r = $('li').prop('selectedIndex');
           r  = $(this.el).index();
-          console.log(this.el);
           socket.emit('index',function(r_index){
             index = JSON.parse(r_index);
             socket.emit('del',id,this.model,r);
@@ -162,10 +169,12 @@
 
           selected[1] = this.model.get('color');
           socket.emit('set',id,this.model);
-          $(this.el).html('<div class="item"">'+title+'<span class="delete">[X]</span></div>');
+
+          r  = $(this.el).index();
+          socket.emit('mod title',r,title,color)
         }
 
-          $(this.el).css('background', color);
+          //$(this.el).css('background', color);
           _refresh();
       }
     },
@@ -209,6 +218,13 @@
         collection.remove(item);
       })
 
+      socket.on('mod_t',function(r,title,color){
+        var mod = $('li').get(r);
+        $(mod).html('<div class="item"">'+title+'<span class="delete">[X]</span></div>');
+        $(mod).css('background', color);
+      });
+      
+
       this.render();
     },
 
@@ -234,7 +250,6 @@
 
 
       });
-      //collection.add(_getAll());
       _refresh();
     },
 

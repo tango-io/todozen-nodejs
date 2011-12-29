@@ -35,6 +35,11 @@ io.sockets.on('connection', function (socket) {
     io.sockets.emit('del_message',item,i);
     });
 
+    socket.on('mod title',function(r,title,color){
+    io.sockets.emit('mod_t',r,title,color);
+    });
+    
+
     socket.on('index', function(callback){
       rc.get('index',function(err,value){
         return callback(value);
