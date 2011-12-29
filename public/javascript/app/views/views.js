@@ -141,7 +141,8 @@
         var color = title.match(regColor)? title.match(regColor).pop().substring(1) : '';
         if(title.match(regColumn)){
           var column = title.match(regColumn).pop().substring(1); 
-          title = title.substring(title.indexOf(title.match(regColumn)), 0);
+          var leng = title.match(regColumn)[0].length
+          title = title.substring(leng, title.length);
         }else{
           var column = this.model.get('column');
         }
@@ -173,8 +174,6 @@
           r  = $(this.el).index();
           socket.emit('mod title',r,title,color)
         }
-
-          //$(this.el).css('background', color);
       }
     },
 
@@ -224,8 +223,6 @@
         $(mod).html('<div class="item"">'+title+'<span class="delete">[X]</span></div>');
         $(mod).css('background', color);
       });
-      
-
       this.render();
     },
 
@@ -248,8 +245,6 @@
           localStorage.setItem('index', JSON.stringify(index));
           collection.add(item);
         }
-
-
         _refresh();
       });
     },
@@ -267,15 +262,14 @@
       if (event.keyCode == 13 && add.value!=''){
         var item = new models.Item();
         var title = add.value;
-
         var color = title.match(regColor)? title.match(regColor).pop().substring(1) : '';
         if(title.match(regColumn)){
         var column = title.match(regColumn).pop().substring(1); 
-        title = title.substring(title.indexOf(title.match(regColumn)), 0);
+        var leng = title.match(regColumn)[0].length
+        title = title.substring(leng, title.length);
         }else{
           var column = COLUMNS[0];
         }
-        
         var id = _guid();
         item.set({
           id_todo: id,
@@ -285,19 +279,15 @@
         });
         //sending data to localstorage
         item.save();
-
         add.value = '';
-
         // Sendind data to redis
         socket.emit('index',function(r_index){
-
           if (r_index){
             index = JSON.parse(r_index);;
             index.push(id);
           }else{
             index.push(id);
           }
-
         socket.emit('add item',index,item);
         });
       }
