@@ -107,7 +107,6 @@
     remove: function(){
       var id = this.model.get('id_todo');
       //this.model.destroy();
-      //_refresh();
 
           
           r  = $(this.el).index();
@@ -154,6 +153,7 @@
             column: column,
             color: color
           });
+          //f = $('li', $(this).parent()).index(this);
           r  = $(this.el).index();
           socket.emit('index',function(r_index){
             index = JSON.parse(r_index);
@@ -175,7 +175,6 @@
         }
 
           //$(this.el).css('background', color);
-          _refresh();
       }
     },
 
@@ -210,12 +209,14 @@
       view = this;
       socket.on('get_message',function(item){
         collection.add(JSON.parse(item));
+        _refresh();
       });
 
       socket.on('del_message',function(item,i){
         var destroy = $('li').get(i);
         $(destroy).remove();
         collection.remove(item);
+        _refresh();
       })
 
       socket.on('mod_t',function(r,title,color){
@@ -249,8 +250,8 @@
         }
 
 
+        _refresh();
       });
-      _refresh();
     },
 
     render: function(){
@@ -286,7 +287,6 @@
         item.save();
 
         add.value = '';
-        _refresh();
 
         // Sendind data to redis
         socket.emit('index',function(r_index){
