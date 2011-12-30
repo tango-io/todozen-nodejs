@@ -159,7 +159,7 @@
       if (event.keyCode == 13 && modify.value!=''){
         var id = this.model.get('id_todo');
         var item = new models.Item();
-        var title = modify.value;
+        var title = htmlspecialchars(modify.value);
 
         var color = title.match(regColor)? title.match(regColor).pop().substring(1) : '';
         if(title.match(regColumn)){
@@ -169,14 +169,19 @@
           var column = this.model.get('column');
         }
 
+        r = $(this.el).index(this.el)+($(this.el).index());
+
+        $('li').each(function(){
+        if($(arguments[1]).attr('style'))
+          r = arguments[0];
+        });
+
         if(column != this.model.get('column')){
           item.set({
             id_todo: id,
             title: title,
             column: column,
-            color: color
           });
-          r = $('li', $(this).parent()).index(this);
           //r  = $(this.el).index();
           socket.emit('index',function(r_index){
             index = JSON.parse(r_index);
@@ -193,7 +198,7 @@
           selected[1] = this.model.get('color');
           socket.emit('set',id,this.model);
 
-          r  = $(this.el).index();
+          //r  = $(this.el).index();
           socket.emit('mod title',r,title,color)
         }
       }
