@@ -64,6 +64,17 @@
       }
     }
 
+  function htmlspecialchars(str) {
+   if (typeof(str) == "string") {
+    str = str.replace(/&/g, "&amp;"); /* must do &amp; first */
+    str = str.replace(/"/g, "&quot;");
+    str = str.replace(/'/g, "&#039;");
+    str = str.replace(/</g, "&lt;");
+    str = str.replace(/>/g, "&gt;");
+    }
+   return str;
+   }
+
 
    //-------------------------------------------------------------------------------------------- end of methods!
 
@@ -123,10 +134,22 @@
     },
     edit: function(){
       if(typeof(modify)!='object'){
-        var value = JSON.parse(localStorage.getItem(this.model.get('id_todo')))['title'];
-        $(this.el).html("<input id='modify'></input>");
+
+        var id = this.model.get('id_todo');
+
+        function get_value(callback){
+        socket.emit('search',id,function(v){
+        var value = JSON.parse(v)['title'];
+        callback(value);
+        });
+        }
+
+        get_value(function(value){
         $('#modify').val(value);
         $("#modify").focus();
+        });
+
+        $(this.el).html("<input id='modify'></input>");
       }
     },
 
@@ -141,8 +164,7 @@
         var color = title.match(regColor)? title.match(regColor).pop().substring(1) : '';
         if(title.match(regColumn)){
           var column = title.match(regColumn).pop().substring(1); 
-          var leng = title.match(regColumn)[0].length
-          title = title.substring(leng, title.length);
+          title = title.replace(regColumn,"");
         }else{
           var column = this.model.get('column');
         }
@@ -154,8 +176,8 @@
             column: column,
             color: color
           });
-          //f = $('li', $(this).parent()).index(this);
-          r  = $(this.el).index();
+          r = $('li', $(this).parent()).index(this);
+          //r  = $(this.el).index();
           socket.emit('index',function(r_index){
             index = JSON.parse(r_index);
             socket.emit('del',id,this.model,r);
@@ -261,12 +283,11 @@
     addItem: function(){
       if (event.keyCode == 13 && add.value!=''){
         var item = new models.Item();
-        var title = add.value;
+        var title = htmlspecialchars(add.value);
         var color = title.match(regColor)? title.match(regColor).pop().substring(1) : '';
         if(title.match(regColumn)){
-        var column = title.match(regColumn).pop().substring(1); 
-        var leng = title.match(regColumn)[0].length
-        title = title.substring(leng, title.length);
+          var column = title.match(regColumn).pop().substring(1); 
+          title = title.replace(regColumn,"");
         }else{
           var column = COLUMNS[0];
         }
@@ -288,7 +309,7 @@
           }else{
             index.push(id);
           }
-        socket.emit('add item',index,item);
+          socket.emit('add item',index,item);
         });
       }
     },
