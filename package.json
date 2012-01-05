@@ -3,4 +3,9 @@
   ,"description" : "Todo zen"
   ,"author" : "Narciso Guillen <narciso.guillen@tangosource.com>"
   ,"version": "0.0.1"
+
+  ,"dependecies" : {
+    "express" : >= "2.5.1"
+    }
+
 }
