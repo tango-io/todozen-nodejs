@@ -118,20 +118,18 @@
     remove: function(){
       var id = this.model.get('id_todo');
       //this.model.destroy();
-
-          
-          r  = $(this.el).index();
-          socket.emit('index',function(r_index){
-            index = JSON.parse(r_index);
-            w = index.indexOf(id);
-            index.pop(w);
-            socket.emit('set','index',index);
-            socket.emit('del',id,this.model,r);
-          });
-      
-
-
-    },
+      socket.emit('index',function(r_index){
+        $('li').each(function(){
+          if($(arguments[1]).attr('style'))
+            r = arguments[0];
+        });
+        index = JSON.parse(r_index);
+        w = index.indexOf(id);
+        index.splice(w,1);                       
+        socket.emit('set','index',index);
+        socket.emit('del',id,this.model,r);
+      });
+    },    
     edit: function(){
       if(typeof(modify)!='object'){
 
@@ -168,8 +166,6 @@
         }else{
           var column = this.model.get('column');
         }
-
-        r = $(this.el).index(this.el)+($(this.el).index());
 
         $('li').each(function(){
         if($(arguments[1]).attr('style'))
