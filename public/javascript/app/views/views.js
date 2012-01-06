@@ -118,16 +118,15 @@
     remove: function(){
       var id = this.model.get('id_todo');
       //this.model.destroy();
-      socket.emit('index',function(r_index){
-        $('li').each(function(){
-          if($(arguments[1]).attr('style'))
-            r = arguments[0];
-        });
+      var element = this.el;
+      socket.emit('search','index',function(r_index){
+        $(element).addClass('deleteMe');
+        var element_index = $('li').index($('li.deleteMe')[0]);
         index = JSON.parse(r_index);
         w = index.indexOf(id);
         index.splice(w,1);                       
         socket.emit('set','index',index);
-        socket.emit('del',id,this.model,r);
+        socket.emit('del',id,this.model,element_index);
       });
     },    
     edit: function(){
@@ -167,10 +166,8 @@
           var column = this.model.get('column');
         }
 
-        $('li').each(function(){
-        if($(arguments[1]).attr('style'))
-          r = arguments[0];
-        });
+        $(this.el).addClass('deleteMe');
+        var element_index = $('li').index($('li.deleteMe')[0]);
 
         if(column != this.model.get('column')){
           item.set({
@@ -178,10 +175,9 @@
             title: title,
             column: column,
           });
-          //r  = $(this.el).index();
-          socket.emit('index',function(r_index){
+          socket.emit('search','index',function(r_index){
             index = JSON.parse(r_index);
-            socket.emit('del',id,this.model,r);
+            socket.emit('del',id,this.model,element_index);
             socket.emit('add item',index,item);
           });
         }else{
@@ -194,8 +190,8 @@
           selected[1] = this.model.get('color');
           socket.emit('set',id,this.model);
 
-          //r  = $(this.el).index();
-          socket.emit('mod title',r,title,color)
+          socket.emit('mod title',element_index,title,color)
+        $(this.el).removeClass('deleteMe');
         }
       }
     },
@@ -252,7 +248,7 @@
     count: function(){
 
       function get(callback){
-        socket.emit('get', function(data){
+        socket.emit('data', function(data){
         return callback(data);
         });
       }
@@ -303,7 +299,7 @@
         item.save();
         add.value = '';
         // Sendind data to redis
-        socket.emit('index',function(r_index){
+        socket.emit('search','index',function(r_index){
           if (r_index){
             index = JSON.parse(r_index);;
             index.push(id);

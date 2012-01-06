@@ -45,29 +45,18 @@ io.sockets.on('connection', function (socket) {
       })      
     });
     
-    socket.on('index', function(callback){
-      rc.get('index',function(err,value){
-        return callback(value);
-      })
-    });
-
-    socket.on('get', function(callback){
-
+    socket.on('data', function(callback){
       function index(data){
         rc.get('index',function(err,value){
           return data(value);
         });
       }
-
       function item(id,data){
         rc.get(id,function(err,value){
           return data(value);
         });
       }
-
-
       index(function(data){
-
         if(data){
           id = JSON.parse(data);
           all = [];
@@ -84,9 +73,7 @@ io.sockets.on('connection', function (socket) {
             });
           }
         }
-
       });
-
     });
 
     socket.on('message', function (msg) {
