@@ -4,7 +4,7 @@ var express = require('express')
   , app = express.createServer()
   , jade = require('jade') 
   , routes = require('./routes')
-  , socket = require('./socket-app');
+  , socket = require('./controllers/socket-controller');
   
   redis = require('redis')
 
