@@ -117,16 +117,16 @@
     },
     remove: function(){
       var id = this.model.get('id_todo');
-      //this.model.destroy();
       var element = this.el;
-      socket.emit('search','index',function(r_index){
+      var model = this.model.get('id_todo');
+      socket.emit('get','index',function(r_index){
         $(element).addClass('deleteMe');
         var element_index = $('li').index($('li.deleteMe')[0]);
         index = JSON.parse(r_index);
         w = index.indexOf(id);
         index.splice(w,1);                       
         socket.emit('set','index',index);
-        socket.emit('del',id,this.model,element_index);
+        socket.emit('del',id,model,element_index);
       });
     },    
     edit: function(){
@@ -135,7 +135,7 @@
         var id = this.model.get('id_todo');
 
         function get_value(callback){
-        socket.emit('search',id,function(v){
+        socket.emit('get',id,function(v){
         var value = JSON.parse(v)['title'];
         callback(value);
         });
@@ -175,7 +175,7 @@
             title: title,
             column: column,
           });
-          socket.emit('search','index',function(r_index){
+          socket.emit('get','index',function(r_index){
             index = JSON.parse(r_index);
             socket.emit('del',id,this.model,element_index);
             socket.emit('add item',index,item);
@@ -224,17 +224,26 @@
       collection = new List();
       collection.bind('add', this.appendItem); 
 
-      view = this;
       socket.on('get_message',function(item){
         collection.add(JSON.parse(item));
         _refresh();
       });
 
-      socket.on('del_message',function(item,i){
+      socket.on('del_message',function(id,i){
         var destroy = $('li').get(i);
         $(destroy).remove();
+
+        function find(item){
+        collection.each(function(value){
+          if(value.attributes.id_todo == id)
+          return item(value);
+        });}
+
+        find(function(item){
         collection.remove(item);
         _refresh();
+        });
+
       })
 
       socket.on('mod_t',function(r,title,color){
@@ -299,7 +308,7 @@
         item.save();
         add.value = '';
         // Sendind data to redis
-        socket.emit('search','index',function(r_index){
+        socket.emit('get','index',function(r_index){
           if (r_index){
             index = JSON.parse(r_index);;
             index.push(id);

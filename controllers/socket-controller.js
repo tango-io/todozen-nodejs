@@ -39,7 +39,7 @@ io.sockets.on('connection', function (socket) {
     io.sockets.emit('mod_t',r,title,color);
     });
     
-    socket.on('search', function (id, callback) {
+    socket.on('get', function (id, callback) {
       rc.get(id,function(err,value){
         return callback(value);
       })      
