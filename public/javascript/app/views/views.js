@@ -83,7 +83,7 @@
   //-------------------------------------------------------------------------------------------- !backbone collection 
 
   var List = Backbone.Collection.extend({
-    model: models.Item
+    model: Item
   });
 
   //index = _indexGet();
@@ -156,7 +156,7 @@
     modItem: function(){
       if (event.keyCode == 13 && modify.value!=''){
         var id = this.model.get('id_todo');
-        var item = new models.Item();
+        var item = new Item();
         var title = htmlspecialchars(modify.value);
 
         var color = title.match(regColor)? title.match(regColor).pop().substring(1) : '';
@@ -283,7 +283,7 @@
 
     addItem: function(){
       if (event.keyCode == 13 && add.value!=''){
-        var item = new models.Item();
+        var item = new Item();
         var title = htmlspecialchars(add.value);
         var color = title.match(regColor)? title.match(regColor).pop().substring(1) : '';
         if(title.match(regColumn)){

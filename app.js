@@ -6,7 +6,6 @@ var express = require('express')
   , routes = require('./routes')
   , socket = require('./socket-app');
   
-  models = require('./public/javascript/app/models/models');
   redis = require('redis')
 
 
