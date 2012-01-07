@@ -8,75 +8,23 @@
     return (_S4()+_S4()+"-"+_S4()+"-"+_S4()+"-"+_S4()+"-"+_S4()+_S4()+_S4());
   }
 
-  function _indexPop(key) {
-      localStorage.removeItem(key);
-      k = key;
-       var index = this._indexGet();
-       var position = index.indexOf(key);
-       if(position != -1){
-      index = index.filter(function(val) {return val != key.toString()});
-         }
-         this._indexSet(index);
+  function _refresh(){
+    for(i=0;i<=COLUMNS.length-1;i++){
+      $('.num'+COLUMNS[i]).html(collection.models.filter(function(col){return col.attributes.column==COLUMNS[i]}).length);
+    }
   }
 
-   function _indexGet() {
-       var index = this._storeGet('index');
-       return index ? index : [];
-     }
-
-    function _indexAdd(key){
-      var index = this._indexGet();
-    index.push(key);
-      this._indexSet(index);
+  function htmlspecialchars(str){
+    if (typeof(str) == "string") {
+      str = str.replace(/&/g, "&amp;");
+      str = str.replace(/"/g, "&quot;");
+      str = str.replace(/'/g, "&#039;");
+      str = str.replace(/</g, "&lt;");
+      str = str.replace(/>/g, "&gt;");
     }
-
-    function _indexSet(index) {
-      localStorage.setItem('index', JSON.stringify(index));
-    }
-
-    function _getAll() {
-      var r = [];
-      var keys = this._indexGet();
-      for (var i = 0 ; i < keys.length ; i++){ 
-        var rv = this._storeGet(keys[i]);
-        if (rv != undefined) r.push(rv);
-      }
-      return r
-    }
-
-    function _storeGet(key){
-      try{
-        return JSON.parse(localStorage.getItem(key));
-      } catch(e){
-        alert('ohhh my gosh! you tried to get and parse an invalid record! check your json.');
-        return false
-      }
-    }
-
-    function _storeSet(key,value){
-      localStorage.setItem(key, JSON.stringify(value));
-      this._indexAdd(key);
-    }
-
-    function _refresh(){
-      for(i=0;i<=COLUMNS.length-1;i++){
-        $('.num'+COLUMNS[i]).html(collection.models.filter(function(col){return col.attributes.column==COLUMNS[i]}).length);
-      }
-    }
-
-  function htmlspecialchars(str) {
-   if (typeof(str) == "string") {
-    str = str.replace(/&/g, "&amp;"); /* must do &amp; first */
-    str = str.replace(/"/g, "&quot;");
-    str = str.replace(/'/g, "&#039;");
-    str = str.replace(/</g, "&lt;");
-    str = str.replace(/>/g, "&gt;");
-    }
-   return str;
-   }
-
-
-   //-------------------------------------------------------------------------------------------- end of methods!
+    return str;
+  }
+  //-------------------------------------------------------------------------------------------- end of methods!
 
   //-------------------------------------------------------------------------------------------- !backbone views 
 
@@ -86,10 +34,8 @@
     model: Item
   });
 
-  //index = _indexGet();
   index = [];
   selected = [];
-  
   //-------------------------------------------------------------------------------------------- end of collection! 
 
   //-------------------------------------------------------------------------------------------- !ItemView 
