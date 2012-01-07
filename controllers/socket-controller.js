@@ -30,9 +30,9 @@ io.sockets.on('connection', function (socket) {
     rc.set(id,JSON.stringify(item),redis.print);
     });
 
-    socket.on('del',function(id,item,i){
+    socket.on('del',function(id,element_index){
     rc.del(id,redis.print);
-    io.sockets.emit('del_message',item,i);
+    io.sockets.emit('del_message',id,element_index);
     });
 
     socket.on('mod title',function(r,title,color){

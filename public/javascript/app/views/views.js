@@ -177,8 +177,9 @@
           });
           socket.emit('get','index',function(r_index){
             index = JSON.parse(r_index);
-            socket.emit('del',id,this.model,element_index);
+            socket.emit('del',id,element_index);
             socket.emit('add item',index,item);
+            socket.emit('mod title',element_index,title,color)
           });
         }else{
 
@@ -243,7 +244,6 @@
         collection.remove(item);
         _refresh();
         });
-
       })
 
       socket.on('mod_t',function(r,title,color){
@@ -263,8 +263,6 @@
       }
 
       get(function(data){
-
-
         for(i=0;i<=data.length-1;i++)
         {
           var item = JSON.parse(data[i]);
@@ -325,6 +323,11 @@
         model: item
       });
       var column = item.attributes.column;
+      var title = item.attributes.title;
+      var color = title.match(regColor)? title.match(regColor).pop().substring(1) : '';
+      item.set({
+      color: color
+      });
       $('#'+column, this.el).append(itemView.render().el);
     },
 
