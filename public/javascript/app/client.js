@@ -1,7 +1,5 @@
 (function($){
-  Backbone.sync = function(method, model, success, error){ 
-    success();
-  };
+  Backbone.sync = function(method, model, success, error){};
 
   COLUMNS = ["inbox", "working", "complete"];
   COLORS = ["red", "blue", "green", "yellow"];
