@@ -31,6 +31,7 @@ var ItemView = Backbone.View.extend({
       index.splice(w,1);                       
       socket.emit('set','index',index);
       socket.emit('del',id,model,element_index);
+      localStorage.removeItem(id);
     });
   },    
   edit: function(){

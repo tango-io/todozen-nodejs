@@ -48,6 +48,7 @@ var ListView = Backbone.View.extend({
     }
 
     get(function(data){
+      localStorage.clear();
       for(i=0;i<=data.length-1;i++)
       {
         var item = JSON.parse(data[i]);
@@ -65,8 +66,6 @@ var ListView = Backbone.View.extend({
       appendItem(item);
     }, this);
     this.count();
-
-
   },
 
   addItem: function(){
@@ -88,7 +87,9 @@ var ListView = Backbone.View.extend({
         color: color
       });
       //sending data to localstorage
+      localStorage.setItem(id,JSON.stringify(item));
       item.save();
+      //cleaning input value
       add.value = '';
       // Sendind data to redis
       socket.emit('get','index',function(r_index){
