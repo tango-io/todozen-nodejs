@@ -38,4 +38,6 @@ app.configure('production', function(){
 });
 
 app.get('/', routes.index);
+app.get('/test', routes.test);
+
 app.listen(4000);
