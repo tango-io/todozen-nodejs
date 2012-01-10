@@ -13,8 +13,10 @@ var TodoList = [{
 
 describe('List',function(){
 
+  list = new List(TodoList);
+
   it('creates todo list',function(){
-    expect(TodoList.length).toEqual(2);
+    expect(list.length).toEqual(2);
   });
 });
 
