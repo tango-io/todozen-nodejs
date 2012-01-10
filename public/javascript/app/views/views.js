@@ -1,4 +1,33 @@
   //-------------------------------------------------------------------------------------------- !private methods
+  COLUMNS = ["inbox", "working", "complete"];
+  COLORS = ["red", "blue", "green", "yellow"];
+  TAG = {
+    "columns":"#",
+    "colors":"!"
+  }
+
+  function start(callback){
+    var column = COLUMNS.map(function(column){return TAG['columns']+column}).join("|");
+    var color = COLORS.map(function(color){return TAG['colors']+color}).join("|");
+    regColumn = new RegExp(column,"gi") 
+    regColor = new RegExp(color,"gi") 
+    callback(true);
+  }
+
+  function build_lists(){
+    start(function(ready){
+      if (ready){
+        $('#kanban').empty();
+        for(i=0;i<=COLUMNS.length-1;i++){
+          var width = Math.floor(($("#kanban").width() - 40) / COLUMNS.length - 30);
+          $("#kanban").append("<div style='width:"+width+"px' class='column "+COLUMNS[i]+"'><h1>"+COLUMNS[i]+"<span class='total num"+COLUMNS[i]+"'>0</span></h1><ol id='"+COLUMNS[i]+"'></ol></div>");
+        }
+      }
+    });
+  }
+
+  build_lists();
+
   function _S4(){
     return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
   }

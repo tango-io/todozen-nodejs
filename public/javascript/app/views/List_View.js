@@ -54,9 +54,9 @@ var ListView = Backbone.View.extend({
         var item = JSON.parse(data[i]);
         index.push(item.id_todo);
         localStorage.setItem(item.id_todo, JSON.stringify(item));
-        localStorage.setItem('index', JSON.stringify(index));
         collection.add(item);
       }
+        localStorage.setItem('index', JSON.stringify(index));
       _refresh();
     });
   },
