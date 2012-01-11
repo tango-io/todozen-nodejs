@@ -12,6 +12,7 @@ var ListView = Backbone.View.extend({
 
     socket.on('get_message',function(item){
       collection.add(JSON.parse(item));
+      refresh();
     });
 
     socket.on('del_message',function(id,i){
@@ -23,6 +24,7 @@ var ListView = Backbone.View.extend({
         return value.get('id_todo') == id;
       }));
 
+      refresh();
     });
 
     socket.on('mod_t',function(r,title,color){
@@ -50,6 +52,7 @@ var ListView = Backbone.View.extend({
         localStorage.setItem(item.id_todo, JSON.stringify(item));
       });
       localStorage.setItem('index', JSON.stringify(index));
+      refresh();
     });
   },
 
@@ -102,11 +105,6 @@ var ListView = Backbone.View.extend({
       model: item
     });
     var column = item.get('column');
-    //var title = item.attributes.title;
-    //var color = title.match(regColor)? title.match(regColor).pop().substring(1) : '';
-    //item.set({
-      //color: color
-    //});
     $('#'+column, this.el).append(itemView.render().el);
   },
 

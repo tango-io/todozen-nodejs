@@ -6,11 +6,8 @@
     "colors":"!"
   }
 
-  function start(callback){
     var color = COLORS.map(function(color){return TAG['colors']+color}).join("|");
     regColor = new RegExp(color,"gi") 
-    callback(true);
-  }
 
   function _S4(){
     return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
@@ -19,13 +16,6 @@
   function _guid(){
     return (_S4()+_S4()+"-"+_S4()+"-"+_S4()+"-"+_S4()+"-"+_S4()+_S4()+_S4());
   }
-
-  //function _refresh(){
-    //for(i=0;i<=COLUMNS.length-1;i++){
-      //var num = collection.models.filter(function(col){return col.attributes.column==COLUMNS[i]}).length;
-      //$('.num'+COLUMNS[i]).html(num+"<span class='RemoveColumn'>[X]</span></div>");
-    //}
-  //}
 
   function htmlspecialchars(str){
     if (typeof(str) == "string") {
@@ -58,6 +48,15 @@
       });
       callback(last.pop());
     }
+
+
+  function refresh(){
+    for(i=0;i<=COLUMNS.length-1;i++){
+      var num = collection.models.filter(function(col){return col.attributes.column==COLUMNS[i]}).length;
+      $('.num'+COLUMNS[i]).html(num+"<span class='RemoveColumn'>[X]</span></div>");
+    }
+  }
+    
 
 
   //-------------------------------------------------------------------------------------------- end of methods!

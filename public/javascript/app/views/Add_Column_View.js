@@ -17,7 +17,12 @@ var AddColumnView = Backbone.View.extend({
       
     _.each(columns.models,function(column){
       var name = column.get('name');
-      $("#kanban").append("<div style='width:"+width+"px' class='column "+name+"'><h1>"+name+"<span class='total num"+name+"'>0</span></h1><ol id='"+name+"'></ol></div>");
+
+      $("#kanban").append("<div style='width:"+width+"px' class='column "+name+"'></div>");
+      $('.'+name).append("<h1 class='title"+name+"'>"+name+"</h1>");
+      $('.title'+name).append("<span class='total num"+name+"'>0</span>");
+      $('.'+name).append("<ol id='"+name+"'></ol>");
+
     });
       
 
