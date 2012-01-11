@@ -12,24 +12,18 @@ var ListView = Backbone.View.extend({
 
     socket.on('get_message',function(item){
       collection.add(JSON.parse(item));
-      _refresh();
     });
 
     socket.on('del_message',function(id,i){
+
       var destroy = $('li').get(i);
       $(destroy).remove();
 
-      function find(item){
-        collection.each(function(value){
-          if(value.attributes.id_todo == id)
-            return item(value);
-        });}
+      collection.remove(_.find(collection.models, function(value){
+        return value.get('id_todo') == id;
+      }));
 
-        find(function(item){
-          collection.remove(item);
-          _refresh();
-        });
-    })
+    });
 
     socket.on('mod_t',function(r,title,color){
       var mod = $('li').get(r);
@@ -41,23 +35,21 @@ var ListView = Backbone.View.extend({
 
   count: function(){
 
+    //Fetchong data from redis
     function get(callback){
       socket.emit('data', function(data){
         return callback(data);
       });
     }
 
+    //Generating Lists
     get(function(data){
-      localStorage.clear();
-      for(i=0;i<=data.length-1;i++)
-      {
-        var item = JSON.parse(data[i]);
-        index.push(item.id_todo);
+      _.each(data,function(item){
+        collection.add(JSON.parse(item));
+        index.push(JSON.parse(item).id_todo);
         localStorage.setItem(item.id_todo, JSON.stringify(item));
-        collection.add(item);
-      }
-        localStorage.setItem('index', JSON.stringify(index));
-      _refresh();
+      });
+      localStorage.setItem('index', JSON.stringify(index));
     });
   },
 
@@ -70,37 +62,38 @@ var ListView = Backbone.View.extend({
 
   addItem: function(){
     if (event.keyCode == 13 && add.value!=''){
+      //Starting up variables
       var item = new Item();
       var title = htmlspecialchars(add.value);
       var color = title.match(regColor)? title.match(regColor).pop().substring(1) : '';
-      if(title.match(regColumn)){
-        var column = title.match(regColumn).pop().substring(1); 
-        title = title.replace(regColumn,"");
-      }else{
-        var column = COLUMNS[0];
-      }
       var id = _guid();
+
+      //Seting up the item
       item.set({
         id_todo: id,
         title: title,
-        column: column,
         color: color
       });
-      //sending data to localstorage
+
+      //Determinate witch column
+      Last(title,function(value){
+        if(value){
+          item.set({column: value.get('name')});
+        }else{
+          item.set({column: columns.models[0].get('name')});
+        }
+      });
+
+      //Save item
       localStorage.setItem(id,JSON.stringify(item));
       item.save();
-      //cleaning input value
+
+      //Send data to redis
+      index.push(id);
+      socket.emit('add item',index,item);
+
+      //Clear add input value 
       add.value = '';
-      // Sendind data to redis
-      socket.emit('get','index',function(r_index){
-        if (r_index){
-          index = JSON.parse(r_index);;
-          index.push(id);
-        }else{
-          index.push(id);
-        }
-        socket.emit('add item',index,item);
-      });
     }
   },
 
@@ -108,12 +101,12 @@ var ListView = Backbone.View.extend({
     var itemView = new ItemView({
       model: item
     });
-    var column = item.attributes.column;
-    var title = item.attributes.title;
-    var color = title.match(regColor)? title.match(regColor).pop().substring(1) : '';
-    item.set({
-      color: color
-    });
+    var column = item.get('column');
+    //var title = item.attributes.title;
+    //var color = title.match(regColor)? title.match(regColor).pop().substring(1) : '';
+    //item.set({
+      //color: color
+    //});
     $('#'+column, this.el).append(itemView.render().el);
   },
 

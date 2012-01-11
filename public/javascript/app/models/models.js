@@ -8,3 +8,8 @@
     }
   });
 
+  var Box = Backbone.Model.extend({
+    defaults:{
+      name: ""
+    }
+  });

@@ -12,8 +12,6 @@ var User = Backbone.View.extend({
 
   register: function(){
     if (event.keyCode == 13 && username.value!=''){
-      //COLUMNS.push(username.value);
-      //build_lists();
       var name = htmlspecialchars(username.value);
       socket.emit('set nickname', name, function (success){
       console.log('Wellcome: '+ name + "!");

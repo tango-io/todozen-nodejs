@@ -59,45 +59,41 @@ var ItemView = Backbone.View.extend({
 
   modItem: function(){
     if (event.keyCode == 13 && modify.value!=''){
-      var id = this.model.get('id_todo');
-      var item = new Item();
       var title = htmlspecialchars(modify.value);
-
       var color = title.match(regColor)? title.match(regColor).pop().substring(1) : '';
-      if(title.match(regColumn)){
-        var column = title.match(regColumn).pop().substring(1); 
-        title = title.replace(regColumn,"");
-      }else{
-        var column = this.model.get('column');
-      }
+      var column = this.model.get('column');
+      var item = this.model;
 
       $(this.el).addClass('deleteMe');
       var element_index = $('li').index($('li.deleteMe')[0]);
 
-      if(column != this.model.get('column')){
-        item.set({
-          id_todo: id,
-          title: title,
-          column: column,
-        });
-        socket.emit('get','index',function(r_index){
-          index = JSON.parse(r_index);
-          socket.emit('del',id,element_index);
-          socket.emit('add item',index,item);
-        });
+      Last(title,function(value){
+        if(value){
+          item.set({
+            column: value.get('name')
+          });
+        }else{
+          item.set({
+            column: column
+          });
+        }
+      });
+     
+      item.set({
+        title: title,
+        color: color
+      });
+
+      if(column == item.get('column')){
+       socket.emit('set',item.get('id_todo'),item);
+       socket.emit('mod title',element_index,title,color)
+       $(this.el).removeClass('deleteMe');
+
       }else{
-
-        this.model.set({
-          title: title,
-          color: color
-        });
-
-        selected[1] = this.model.get('color');
-        socket.emit('set',id,this.model);
-
-        socket.emit('mod title',element_index,title,color)
-        $(this.el).removeClass('deleteMe');
+       socket.emit('del',item.get('id_todo'),element_index);
+       socket.emit('add item',index,item);
       }
+
     }
   },
 
