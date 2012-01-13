@@ -35,6 +35,18 @@ io.sockets.on('connection', function (socket) {
     io.sockets.emit('del_message',id,element_index);
     });
 
+    socket.on('delete',function(id){
+    rc.del(id,redis.print);
+    });
+
+    socket.on('add_column',function(){
+      io.sockets.emit('add_col');
+    });
+
+    socket.on('remove_column',function(column){
+      io.sockets.emit('rem_col',column);
+    });
+    
     socket.on('mod title',function(r,title,color){
     io.sockets.emit('mod_t',r,title,color);
     });

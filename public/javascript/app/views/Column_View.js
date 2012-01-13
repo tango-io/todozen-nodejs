@@ -3,9 +3,11 @@ var ColumnView = Backbone.View.extend({
   tagNAme: 'ol',
 
   initialize: function(){
-    _.bindAll(this, 'remove'); 
     this.collection = new Columns();
     this.render();
+    socket.on('rem_col',function(column){
+      $('#'+column).remove();
+    });
   },
   
   render: function(){
@@ -32,6 +34,7 @@ var ColumnView = Backbone.View.extend({
 
         }
 
+          socket.emit('add_column');
     });
   }
 });

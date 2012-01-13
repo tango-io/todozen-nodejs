@@ -7,6 +7,11 @@ var ListView = Backbone.View.extend({
   },
   initialize: function(){
     _.bindAll(this, 'render', 'addItem', 'appendItem'); 
+
+    if(!typeof(collection)==='undefined'){
+      collection.reset();
+    }
+
     collection = new List();
     collection.bind('add', this.appendItem); 
 
@@ -32,6 +37,7 @@ var ListView = Backbone.View.extend({
       $(mod).html('<div class="item"">'+title+'<span class="delete">[X]</span></div>');
       $(mod).css('background', color);
     });
+
     this.render();
   },
 
@@ -57,8 +63,9 @@ var ListView = Backbone.View.extend({
   },
 
   render: function(){
+    append = this.appendItem;
     _(collection.models).each(function(item){
-      appendItem(item);
+      append(item);
     }, this);
     this.count();
   },

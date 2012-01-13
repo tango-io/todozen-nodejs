@@ -51,10 +51,11 @@
 
 
   function refresh(){
-    for(i=0;i<=COLUMNS.length-1;i++){
-      var num = collection.models.filter(function(col){return col.attributes.column==COLUMNS[i]}).length;
-      $('.num'+COLUMNS[i]).html(num+"<span class='RemoveColumn'>[X]</span></div>");
-    }
+    _.each(columns.models,function(column){
+    var col_name = column.get('name'); 
+    var num = collection.models.filter(function(col){return col.attributes.column==col_name}).length;
+    $('.num'+col_name).html(num+"<span id='D"+col_name+"' class='RemoveColumn'>[X]</span></div>");
+    });
   }
     
 
