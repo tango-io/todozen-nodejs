@@ -4,7 +4,7 @@
   ,"author" : "Narciso Guillen <narciso.guillen@tangosource.com>"
   ,"version": "0.0.1"
 
-  ,"dependencie" : {
+  ,"dependencies" : {
      "express" : "2.5.1"
     ,"connect-redis" : "1.2.0"
     ,"connect" : "1.8.5"
