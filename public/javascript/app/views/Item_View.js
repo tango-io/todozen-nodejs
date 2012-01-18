@@ -59,7 +59,7 @@ var ItemView = Backbone.View.extend({
 
   modItem: function(){
     if (event.keyCode == 13 && modify.value!=''){
-      var title = htmlspecialchars(modify.value);
+      var title = method.clean(modify.value);
       var color = title.match(regColor)? title.match(regColor).pop().substring(1) : '';
       var column = this.model.get('column');
       var item = this.model;
@@ -67,7 +67,7 @@ var ItemView = Backbone.View.extend({
       $(this.el).addClass('deleteMe');
       var element_index = $('li').index($('li.deleteMe')[0]);
 
-      Last(title,function(value){
+      method.Last.Tag(title,function(value){
         if(value){
           item.set({
             column: value.get('name')

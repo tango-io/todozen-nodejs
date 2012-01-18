@@ -6,7 +6,6 @@ var DeleteColumnView = Backbone.View.extend({
   },
 
   ClearBox: function(elements,column){
-
     columns.remove(_.find(columns.models, function(value){
       return value.get('name') == column;
     }));
@@ -15,10 +14,7 @@ var DeleteColumnView = Backbone.View.extend({
   },
 
   reset: function(columns){
-    var Show = new AddColumnView({
-      model: Box
-    });
-    Show.showBox(columns);
+    method.show(columns);
   },
 
   remove: function(column){

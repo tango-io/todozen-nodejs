@@ -17,7 +17,7 @@ var ListView = Backbone.View.extend({
 
     socket.on('get_message',function(item){
       collection.add(JSON.parse(item));
-      refresh();
+      method.refresh();
     });
 
     socket.on('del_message',function(id,i){
@@ -29,7 +29,7 @@ var ListView = Backbone.View.extend({
         return value.get('id_todo') == id;
       }));
 
-      refresh();
+      method.refresh();
     });
 
     socket.on('mod_t',function(r,title,color){
@@ -58,7 +58,7 @@ var ListView = Backbone.View.extend({
         localStorage.setItem(item.id_todo, JSON.stringify(item));
       });
       localStorage.setItem('index', JSON.stringify(index));
-      refresh();
+      method.refresh();
     });
   },
 
@@ -74,9 +74,9 @@ var ListView = Backbone.View.extend({
     if (event.keyCode == 13 && add.value!=''){
       //Starting up variables
       var item = new Item();
-      var title = htmlspecialchars(add.value);
+      var title = method.clean(add.value);
       var color = title.match(regColor)? title.match(regColor).pop().substring(1) : '';
-      var id = _guid();
+      var id = method.guid.id();
 
       //Seting up the item
       item.set({
@@ -86,7 +86,7 @@ var ListView = Backbone.View.extend({
       });
 
       //Determinate witch column
-      Last(title,function(value){
+      method.Last.Tag(title,function(value){
         if(value){
           item.set({column: value.get('name')});
         }else{
