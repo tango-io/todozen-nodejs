@@ -1,3 +1,41 @@
+function Util(){
+
+  function refresh(){
+    _.each(columns.models,function(column){
+      var col_name = column.get('name'); 
+      var num = collection.models.filter(function(col){return col.attributes.column==col_name}).length; 
+      $('.num'+col_name).html(num+"<span id='D"+col_name+"' class='RemoveColumn'>[X]</span></div>");
+      $('#D'+col_name).on('click',function(){
+        var deletecolumn = new DeleteColumnView(col_name,columns);
+      });
+    });
+  }
+
+  function show(){
+    $('#kanban').empty();
+    var width = Math.floor(($("#kanban").width() - 40) / columns.length - 30);
+
+    _.each(columns.models,function(column){
+      var name = column.get('name');
+      $("#kanban").append("<div style='width:"+width+"px' class='column "+name+"'></div>");
+      $('.'+name).html("<h1 class='title"+name+"'>"+name+"</h1>");
+      $('.title'+name).append("<span class='total num"+name+"'>0</span>");
+      $('.'+name).append("<ol id='"+name+"'></ol>");
+    });
+
+    this.refresh();
+    _.each(collection.models,function(item){
+      listView.appendItem(item); 
+    });
+  }
+
+  return {
+    show: show
+  }
+
+}
+
+
 (function($){
   method = {
 
