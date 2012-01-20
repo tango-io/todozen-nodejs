@@ -6,15 +6,30 @@
     a.led
   #kanban
 
-script(type="text/javascript", src="javascript/app/models/models.js")
+script(type="text/javascript")
+  window.ToDoZen = {
+    Models:      {},
+    Views:       {},
+    Collections: {}
+  };
 
-script(type="text/javascript", src="javascript/app/views/Column_View.js")
-script(type="text/javascript", src="javascript/app/views/Add_Column_View.js")
-script(type="text/javascript", src="javascript/app/views/Delete_Column_View.js")
-script(type="text/javascript", src="javascript/app/views/User_View.js")
-script(type="text/javascript", src="javascript/app/views/List_View.js")
-script(type="text/javascript", src="javascript/app/views/Item_View.js")
+script(type="text/javascript", src="javascript/app/models/column.js")
 
-script(type="text/javascript", src="javascript/app/helpers/utilities.js")
+script(type="text/javascript", src="javascript/app/views/tool_bar_view.js")
+script(type="text/javascript", src="javascript/app/views/columns_area_view.js")
+script(type="text/javascript", src="javascript/app/views/task_view.js")
+script(type="text/javascript", src="javascript/app/views/column_view.js")
+
+script(type="text/javascript", src="javascript/app/collections/columns_collection.js")
+script(type="text/javascript", src="javascript/app/collections/tasks_collection.js")
 
 script(type="text/javascript", src="javascript/app/controllers/backbone_controller.js")
+
+script(type="template", id="column-template")
+  div.column
+    h1.column-title
+      #\{name\}
+      span.total
+        span.number 0
+        span.RemoveColumn [X]
+    ol

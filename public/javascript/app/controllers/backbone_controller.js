@@ -18,17 +18,7 @@
    console.log('ofline');
    $('#toolbar .led').addClass('off');
   });
-  
-//---------------------------------------------------------------------- end conection!
 
-
-//---------------------------------------------------------------------- !column generator  
-  var addcolumn = new AddColumnView();
-  var columnview = new ColumnView();
-//---------------------------------------------------------------------- !end column generator
-
-//---------------------------------------------------------------------- !User conecction  
-  var user = new User();
-//---------------------------------------------------------------------- end User conection!  
-
+  ToDoZen.tool_bar     = new ToDoZen.Views.ToolBarView();
+  ToDoZen.columns_area = new ToDoZen.Views.ColumnsAreaView();
 })(jQuery);
