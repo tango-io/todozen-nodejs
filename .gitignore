@@ -1,1 +1,4 @@
 lib/backbone.js
+*.swp*
+*.rdb
+node_modules/
